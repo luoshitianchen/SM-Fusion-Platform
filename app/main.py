@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import os
+import time
 from pathlib import Path
 from uuid import uuid4
 
@@ -47,6 +48,7 @@ async def security_headers(request: Request, call_next):
 
 
 async def probe(key: str, config: dict[str, str]) -> dict[str, str]:
+    started = time.perf_counter()
     try:
         async with httpx.AsyncClient(timeout=httpx.Timeout(3, connect=2)) as client:
             response = await client.get(f"{config['internal_url']}/health")
@@ -54,7 +56,7 @@ async def probe(key: str, config: dict[str, str]) -> dict[str, str]:
         state = "healthy"
     except (httpx.HTTPError, ValueError):
         state = "unavailable"
-    return {"id": key, "name": config["name"], "description": config["description"], "url": config["public_url"], "status": state}
+    return {"id": key, "name": config["name"], "description": config["description"], "url": config["public_url"], "status": state, "latency_ms": round((time.perf_counter() - started) * 1000, 2)}
 
 
 @app.get("/", include_in_schema=False)
@@ -77,3 +79,9 @@ async def ready() -> dict[str, object]:
 async def service_catalog() -> dict[str, object]:
     services = await asyncio.gather(*(probe(key, value) for key, value in SERVICES.items()))
     return {"items": services, "healthy": sum(item["status"] == "healthy" for item in services), "total": len(services)}
+
+
+@app.get("/api/overview")
+async def overview() -> dict[str, object]:
+    services = await asyncio.gather(*(probe(key, value) for key, value in SERVICES.items()))
+    return {"platform": {"name": app.title, "version": app.version}, "services": services, "healthy": sum(item["status"] == "healthy" for item in services), "total": len(services), "refreshed_at": time.time()}

@@ -9,3 +9,14 @@ def test_portal_and_health():
         assert response.status_code == 200
         assert response.headers["X-Request-Id"] == "fusion-test"
         assert response.headers["X-Frame-Options"] == "DENY"
+
+
+def test_overview_returns_enterprise_service_metrics():
+    with TestClient(app) as client:
+        response = client.get("/api/overview")
+        assert response.status_code == 200
+        payload = response.json()
+        assert payload["total"] == 2
+        assert len(payload["services"]) == 2
+        assert all("latency_ms" in service for service in payload["services"])
+        assert payload["platform"]["name"] == "SM Fusion Platform"
