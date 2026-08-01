@@ -5,9 +5,9 @@ services:
     environment:
       ERP_DATABASE_PATH: /app/data/erp.db
       ERP_ENV: development
-      ERP_BOOTSTRAP_PASSWORD: ${ERP_BOOTSTRAP_PASSWORD:-CHANGE_FOR_LOCAL_DEMO}
-      ERP_SM4_KEY_HEX: ${ERP_SM4_KEY_HEX:-00112233445566778899aabbccddeeff}
-      ERP_KNOWLEDGE_BOT_INTEGRATION_KEY: ${FUSION_INTEGRATION_KEY:-REPLACE_WITH_SHARED_RANDOM_KEY}
+      ERP_BOOTSTRAP_PASSWORD: ${ERP_BOOTSTRAP_PASSWORD:?Set ERP_BOOTSTRAP_PASSWORD in .env}
+      ERP_SM4_KEY_HEX: ${ERP_SM4_KEY_HEX:?Set ERP_SM4_KEY_HEX in .env}
+      ERP_KNOWLEDGE_BOT_INTEGRATION_KEY: ${FUSION_INTEGRATION_KEY:?Set FUSION_INTEGRATION_KEY in .env}
       ERP_ALLOWED_HOSTS: sm-erp,localhost,127.0.0.1
     volumes: ["erp-data:/app/data"]
     restart: unless-stopped
@@ -19,7 +19,7 @@ services:
       KB_ENV: development
       SEED_DEMO_DATA: "false"
       ERP_AUTH_URL: http://sm-erp:8100/api/integrations/knowledge-bot/auth
-      ERP_INTEGRATION_KEY: ${FUSION_INTEGRATION_KEY:-REPLACE_WITH_SHARED_RANDOM_KEY}
+      ERP_INTEGRATION_KEY: ${FUSION_INTEGRATION_KEY:?Set FUSION_INTEGRATION_KEY in .env}
       ERP_VERIFY_TLS: "false"
       KB_ALLOWED_HOSTS: knowledge-bot,localhost,127.0.0.1
       CORS_ORIGINS: http://127.0.0.1:8200
