@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import asyncio
+import json
 import os
 import time
 from pathlib import Path
+from urllib.parse import urlsplit
 from uuid import uuid4
 
 import httpx
@@ -11,20 +13,19 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import FileResponse
 
-SERVICES = {
-    "erp": {
-        "name": "SM ERP",
-        "internal_url": os.getenv("ERP_INTERNAL_URL", "http://sm-erp:8100"),
-        "public_url": os.getenv("ERP_PUBLIC_URL", "http://127.0.0.1:8100"),
-        "description": "企业身份、组织、角色与审计中心",
-    },
-    "knowledge": {
-        "name": "SM Knowledge Bot",
-        "internal_url": os.getenv("KB_INTERNAL_URL", "http://knowledge-bot:8000"),
-        "public_url": os.getenv("KB_PUBLIC_URL", "http://127.0.0.1:8010"),
-        "description": "RAG、多轮对话、Agent 与权限知识检索",
-    },
-}
+CATALOG_PATH = Path(os.getenv("FUSION_SERVICE_CATALOG", "config/services.json"))
+
+
+def load_services() -> list[dict[str, str]]:
+    """从外部目录加载项目，新增系统无需修改或重新编译门户代码。"""
+    try:
+        services = json.loads(CATALOG_PATH.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise RuntimeError(f"服务目录不可用: {CATALOG_PATH}") from exc
+    required = {"id", "name", "internal_url", "public_url", "description"}
+    if not isinstance(services, list) or not services or any(not isinstance(item, dict) or not required <= item.keys() for item in services):
+        raise RuntimeError("服务目录格式无效")
+    return services
 
 app = FastAPI(title="SM Fusion Platform", version="1.0.0", docs_url=None, redoc_url=None)
 app.add_middleware(
@@ -47,16 +48,23 @@ async def security_headers(request: Request, call_next):
     return response
 
 
-async def probe(key: str, config: dict[str, str]) -> dict[str, str]:
+async def probe(config: dict[str, str]) -> dict[str, object]:
     started = time.perf_counter()
     try:
         async with httpx.AsyncClient(timeout=httpx.Timeout(3, connect=2)) as client:
-            response = await client.get(f"{config['internal_url']}/health")
+            response = await client.get(f"{config['internal_url'].rstrip('/')}{config.get('health_path', '/health')}")
             response.raise_for_status()
         state = "healthy"
     except (httpx.HTTPError, ValueError):
         state = "unavailable"
-    return {"id": key, "name": config["name"], "description": config["description"], "url": config["public_url"], "status": state, "latency_ms": round((time.perf_counter() - started) * 1000, 2)}
+    return {"id": config["id"], "name": config["name"], "description": config["description"], "url": config["public_url"], "category": config.get("category", "企业应用"), "status": state, "latency_ms": round((time.perf_counter() - started) * 1000, 2)}
+
+
+def resolve_public_urls(services: list[dict[str, object]], request: Request) -> list[dict[str, object]]:
+    host = urlsplit(str(request.base_url)).hostname or "127.0.0.1"
+    for service in services:
+        service["url"] = str(service["url"]).replace("{host}", host)
+    return services
 
 
 @app.get("/", include_in_schema=False)
@@ -70,18 +78,21 @@ def health() -> dict[str, str]:
 
 
 @app.get("/readyz")
-async def ready() -> dict[str, object]:
-    services = await asyncio.gather(*(probe(key, value) for key, value in SERVICES.items()))
+async def ready(request: Request) -> dict[str, object]:
+    services = await asyncio.gather(*(probe(service) for service in load_services()))
+    resolve_public_urls(services, request)
     return {"status": "ready" if all(item["status"] == "healthy" for item in services) else "degraded", "services": services}
 
 
 @app.get("/api/services")
-async def service_catalog() -> dict[str, object]:
-    services = await asyncio.gather(*(probe(key, value) for key, value in SERVICES.items()))
+async def service_catalog(request: Request) -> dict[str, object]:
+    services = await asyncio.gather(*(probe(service) for service in load_services()))
+    resolve_public_urls(services, request)
     return {"items": services, "healthy": sum(item["status"] == "healthy" for item in services), "total": len(services)}
 
 
 @app.get("/api/overview")
-async def overview() -> dict[str, object]:
-    services = await asyncio.gather(*(probe(key, value) for key, value in SERVICES.items()))
+async def overview(request: Request) -> dict[str, object]:
+    services = await asyncio.gather(*(probe(service) for service in load_services()))
+    resolve_public_urls(services, request)
     return {"platform": {"name": app.title, "version": app.version}, "services": services, "healthy": sum(item["status"] == "healthy" for item in services), "total": len(services), "refreshed_at": time.time()}

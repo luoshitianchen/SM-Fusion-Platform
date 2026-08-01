@@ -1,0 +1,29 @@
+[
+  {
+    "id": "fusion",
+    "name": "SM Fusion Platform",
+    "category": "统一门户",
+    "internal_url": "http://fusion-portal:8200",
+    "public_url": "/",
+    "health_path": "/health",
+    "description": "企业应用目录、统一运行视图和扩展编排中心"
+  },
+  {
+    "id": "erp",
+    "name": "SM ERP",
+    "category": "企业管理",
+    "internal_url": "http://sm-erp:8100",
+    "public_url": "http://{host}:8100",
+    "health_path": "/health",
+    "description": "企业身份、组织、角色与审计中心"
+  },
+  {
+    "id": "knowledge",
+    "name": "SM Knowledge Bot",
+    "category": "企业智能",
+    "internal_url": "http://knowledge-bot:8000",
+    "public_url": "http://{host}:8010",
+    "health_path": "/health",
+    "description": "RAG、多轮对话、Agent 与权限知识检索"
+  }
+]

@@ -16,7 +16,7 @@ def test_overview_returns_enterprise_service_metrics():
         response = client.get("/api/overview")
         assert response.status_code == 200
         payload = response.json()
-        assert payload["total"] == 2
-        assert len(payload["services"]) == 2
+        assert payload["total"] == 3
+        assert len(payload["services"]) == 3
         assert all("latency_ms" in service for service in payload["services"])
         assert payload["platform"]["name"] == "SM Fusion Platform"

@@ -3,3 +3,7 @@ __pycache__/
 *.py[cod]
 .env
 .pytest_cache/
+build/
+dist/
+*.spec
+desktop/desktop-config.json

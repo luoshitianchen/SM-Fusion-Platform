@@ -1,7 +1,7 @@
 services:
   sm-erp:
     build: https://github.com/luoshitianchen/SM-ERP.git#main
-    ports: ["127.0.0.1:8100:8100"]
+    ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8100:8100"]
     environment:
       ERP_DATABASE_PATH: /app/data/erp.db
       ERP_ENV: development
@@ -13,7 +13,7 @@ services:
     restart: unless-stopped
   knowledge-bot:
     build: https://github.com/luoshitianchen/SM-knowledge-bot.git#main
-    ports: ["127.0.0.1:8010:8000"]
+    ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8010:8000"]
     environment:
       DATABASE_PATH: /app/data/knowledge_bot.db
       KB_ENV: development
@@ -28,10 +28,9 @@ services:
     restart: unless-stopped
   fusion-portal:
     build: .
-    ports: ["127.0.0.1:8200:8200"]
+    ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8200:8200"]
     environment:
-      ERP_INTERNAL_URL: http://sm-erp:8100
-      KB_INTERNAL_URL: http://knowledge-bot:8000
+      FUSION_SERVICE_CATALOG: /app/config/services.json
     depends_on: [sm-erp, knowledge-bot]
     restart: unless-stopped
     read_only: true

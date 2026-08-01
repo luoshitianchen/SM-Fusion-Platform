@@ -21,6 +21,16 @@ docker compose up --build -d
 
 三个入口默认仅绑定 `127.0.0.1`。生产环境应置于企业 VPN 或零信任网关之后，并由 KMS/HSM 注入密钥。
 
+## 可扩展项目目录
+
+当前服务目录位于 `config/services.json`，已注册融合门户、ERP 和知识库三个项目。新增企业项目时追加一项 `id`、`name`、`internal_url`、`public_url`、`health_path` 和 `description` 即可，不需要修改或重新编译门户后端。
+
+## 服务器部署
+
+将 `.env` 中的 `FUSION_BIND_ADDRESS` 设置为服务器受控内网 IP，通过企业反向代理提供 HTTPS，再由防火墙、VPN 或零信任网关限制访问来源。不要直接把三个容器端口开放到公网。
+
+桌面端连接服务器时，将 `desktop/desktop-config.example.json` 复制为 EXE 同目录的 `desktop-config.json`，填写服务器 HTTPS 门户地址。同一个桌面安装包可以在本机与服务器模式之间切换。
+
 ## 本地开发融合门户
 
 ```powershell
@@ -29,6 +39,19 @@ py -3.11 -m venv .venv
 pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8200
 ```
+
+## Windows 桌面端
+
+桌面端目录提供原生 Tkinter 企业客户端和 PyInstaller 发布流程。客户端动态读取三个项目及后续新增项目，不保存 ERP 密码、Token 或国密密钥。
+
+```powershell
+docker compose up -d
+cd desktop
+.\build.ps1
+.\dist\SM-Fusion-Platform.exe
+```
+
+推送版本标签（例如 `v1.0.0`）后，GitHub Actions 会在 Windows Runner 构建并发布 `SM-Fusion-Platform.exe` 到 Release。发布前请先在企业环境验证门户地址、签名策略和杀毒软件兼容性。
 
 ## 架构
 
