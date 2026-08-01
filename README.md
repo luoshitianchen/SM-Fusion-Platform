@@ -1,6 +1,6 @@
 # SM Fusion Platform
 
-**Windows 正式版：** [下载 v1.0.0 桌面客户端](https://github.com/luoshitianchen/SM-Fusion-Platform/releases/download/v1.0.0/SM-Fusion-Platform.exe) · [查看发布说明](https://github.com/luoshitianchen/SM-Fusion-Platform/releases/tag/v1.0.0)
+**桌面正式版：** [查看最新发布](https://github.com/luoshitianchen/SM-Fusion-Platform/releases/latest)
 
 多态融合企业平台，将 `SM-ERP` 的身份与组织治理、`SM-knowledge-bot` 的 RAG 与多 Agent 能力统一编排，并提供企业融合门户和聚合健康状态。
 
@@ -44,16 +44,15 @@ uvicorn app.main:app --reload --port 8200
 
 ## Windows 桌面端
 
-桌面端目录提供原生 Tkinter 企业客户端和 PyInstaller 发布流程。客户端动态读取三个项目及后续新增项目，不保存 ERP 密码、Token 或国密密钥。
+桌面端目录提供原生 Tkinter 企业客户端。客户端动态读取三个项目及后续新增项目，不保存 ERP 密码、Token 或国密密钥。
 
 ```powershell
 docker compose up -d
 cd desktop
-.\build.ps1
-.\dist\SM-Fusion-Platform.exe
+.\start.ps1
 ```
 
-推送版本标签（例如 `v1.0.0`）后，GitHub Actions 会在 Windows Runner 构建并发布 `SM-Fusion-Platform.exe` 到 Release。发布前请先在企业环境验证门户地址、签名策略和杀毒软件兼容性。
+推送版本标签后，GitHub Actions 会发布可审查的桌面源码 ZIP 与 SHA-256 校验文件。未签名的 PyInstaller 单文件 EXE 已停止发布；企业 EXE/MSIX 需使用组织代码签名证书构建和签名。
 
 ## 持续更新
 
@@ -61,7 +60,7 @@ cd desktop
 - Dependabot 每周检查 Python 与 GitHub Actions 依赖；
 - 安全工作流执行依赖审计、CodeQL 和密钥泄露扫描；
 - 正式版本使用 `v主版本.次版本.修订号` 标签；
-- Windows Release 同时发布 EXE 与 `SHA256SUMS.txt` 校验文件；
+- Desktop Release 同时发布透明源码 ZIP 与 `SHA256SUMS.txt` 校验文件；
 - 版本变化记录在 [CHANGELOG.md](CHANGELOG.md)。
 
 ## 架构

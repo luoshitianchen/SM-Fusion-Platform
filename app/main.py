@@ -4,6 +4,7 @@ import asyncio
 import json
 import os
 import time
+import threading
 from pathlib import Path
 from urllib.parse import urlsplit
 from uuid import uuid4
@@ -28,6 +29,9 @@ def load_services() -> list[dict[str, str]]:
     return services
 
 app = FastAPI(title="SM Fusion Platform", version="1.0.0", docs_url=None, redoc_url=None)
+PROBE_CACHE_SECONDS = int(os.getenv("FUSION_PROBE_CACHE_SECONDS", "5"))
+_probe_cache: tuple[float, list[dict[str, object]]] | None = None
+_probe_cache_lock = threading.Lock()
 app.add_middleware(
     TrustedHostMiddleware,
     allowed_hosts=[item.strip() for item in os.getenv("FUSION_ALLOWED_HOSTS", "localhost,127.0.0.1,testserver").split(",") if item.strip()],
@@ -60,6 +64,18 @@ async def probe(config: dict[str, str]) -> dict[str, object]:
     return {"id": config["id"], "name": config["name"], "description": config["description"], "url": config["public_url"], "category": config.get("category", "企业应用"), "status": state, "latency_ms": round((time.perf_counter() - started) * 1000, 2)}
 
 
+async def probe_all() -> list[dict[str, object]]:
+    global _probe_cache
+    now = time.monotonic()
+    with _probe_cache_lock:
+        if _probe_cache and now - _probe_cache[0] < PROBE_CACHE_SECONDS:
+            return [dict(item) for item in _probe_cache[1]]
+    services = await asyncio.gather(*(probe(service) for service in load_services()))
+    with _probe_cache_lock:
+        _probe_cache = (time.monotonic(), services)
+    return [dict(item) for item in services]
+
+
 def resolve_public_urls(services: list[dict[str, object]], request: Request) -> list[dict[str, object]]:
     host = urlsplit(str(request.base_url)).hostname or "127.0.0.1"
     for service in services:
@@ -79,20 +95,25 @@ def health() -> dict[str, str]:
 
 @app.get("/readyz")
 async def ready(request: Request) -> dict[str, object]:
-    services = await asyncio.gather(*(probe(service) for service in load_services()))
+    services = await probe_all()
     resolve_public_urls(services, request)
     return {"status": "ready" if all(item["status"] == "healthy" for item in services) else "degraded", "services": services}
 
 
 @app.get("/api/services")
 async def service_catalog(request: Request) -> dict[str, object]:
-    services = await asyncio.gather(*(probe(service) for service in load_services()))
+    services = await probe_all()
     resolve_public_urls(services, request)
     return {"items": services, "healthy": sum(item["status"] == "healthy" for item in services), "total": len(services)}
 
 
 @app.get("/api/overview")
 async def overview(request: Request) -> dict[str, object]:
-    services = await asyncio.gather(*(probe(service) for service in load_services()))
+    services = await probe_all()
     resolve_public_urls(services, request)
     return {"platform": {"name": app.title, "version": app.version}, "services": services, "healthy": sum(item["status"] == "healthy" for item in services), "total": len(services), "refreshed_at": time.time()}
+
+
+@app.get("/api/version")
+def version() -> dict[str, str]:
+    return {"name": app.title, "version": app.version, "channel": os.getenv("FUSION_RELEASE_CHANNEL", "stable")}

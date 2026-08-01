@@ -20,3 +20,10 @@ def test_overview_returns_enterprise_service_metrics():
         assert len(payload["services"]) == 3
         assert all("latency_ms" in service for service in payload["services"])
         assert payload["platform"]["name"] == "SM Fusion Platform"
+
+
+def test_version_endpoint_is_stable():
+    with TestClient(app) as client:
+        response = client.get("/api/version")
+        assert response.status_code == 200
+        assert response.json()["version"] == "1.0.0"
