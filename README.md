@@ -49,10 +49,10 @@ uvicorn app.main:app --reload --port 8200
 ```powershell
 docker compose up -d
 cd desktop
-.\start.ps1
+.\start.cmd
 ```
 
-推送版本标签后，GitHub Actions 会发布可审查的桌面源码 ZIP 与 SHA-256 校验文件。未签名的 PyInstaller 单文件 EXE 已停止发布；企业 EXE/MSIX 需使用组织代码签名证书构建和签名。
+推送版本标签后，GitHub Actions 会发布经过 Defender 扫描的目录型 Windows EXE ZIP 与 SHA-256 校验文件。单文件自解压 EXE 已停止发布；企业分发仍应使用组织代码签名证书签名。
 
 ## 持续更新
 
@@ -60,7 +60,7 @@ cd desktop
 - Dependabot 每周检查 Python 与 GitHub Actions 依赖；
 - 安全工作流执行依赖审计、CodeQL 和密钥泄露扫描；
 - 正式版本使用 `v主版本.次版本.修订号` 标签；
-- Desktop Release 同时发布透明源码 ZIP 与 `SHA256SUMS.txt` 校验文件；
+- Desktop Release 同时发布目录型 Windows EXE ZIP 与 `SHA256SUMS.txt` 校验文件；
 - 版本变化记录在 [CHANGELOG.md](CHANGELOG.md)。
 
 ## 架构
