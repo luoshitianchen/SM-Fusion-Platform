@@ -53,6 +53,15 @@ cd desktop
 
 推送版本标签（例如 `v1.0.0`）后，GitHub Actions 会在 Windows Runner 构建并发布 `SM-Fusion-Platform.exe` 到 Release。发布前请先在企业环境验证门户地址、签名策略和杀毒软件兼容性。
 
+## 持续更新
+
+- 所有变更提交到 `main` 并由 CI 执行测试和 Docker 配置校验；
+- Dependabot 每周检查 Python 与 GitHub Actions 依赖；
+- 安全工作流执行依赖审计、CodeQL 和密钥泄露扫描；
+- 正式版本使用 `v主版本.次版本.修订号` 标签；
+- Windows Release 同时发布 EXE 与 `SHA256SUMS.txt` 校验文件；
+- 版本变化记录在 [CHANGELOG.md](CHANGELOG.md)。
+
 ## 架构
 
 ```mermaid

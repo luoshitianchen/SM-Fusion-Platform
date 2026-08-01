@@ -15,6 +15,9 @@ jobs:
           python-version: '3.11'
       - run: python -m pip install -r desktop/requirements.txt
       - run: python -m PyInstaller --noconfirm --clean --onefile --windowed --name SM-Fusion-Platform desktop/main.py
+      - name: Generate SHA-256 checksum
+        shell: pwsh
+        run: (Get-FileHash dist/SM-Fusion-Platform.exe -Algorithm SHA256).Hash + '  SM-Fusion-Platform.exe' | Set-Content dist/SHA256SUMS.txt
       - uses: actions/upload-artifact@v4
         with:
           name: SM-Fusion-Platform-windows
@@ -23,4 +26,6 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/SM-Fusion-Platform.exe
+          files: |
+            dist/SM-Fusion-Platform.exe
+            dist/SHA256SUMS.txt
