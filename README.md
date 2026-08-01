@@ -1,5 +1,7 @@
 # SM Fusion Platform
 
+**Windows 正式版：** [下载 v1.0.0 桌面客户端](https://github.com/luoshitianchen/SM-Fusion-Platform/releases/download/v1.0.0/SM-Fusion-Platform.exe) · [查看发布说明](https://github.com/luoshitianchen/SM-Fusion-Platform/releases/tag/v1.0.0)
+
 多态融合企业平台，将 `SM-ERP` 的身份与组织治理、`SM-knowledge-bot` 的 RAG 与多 Agent 能力统一编排，并提供企业融合门户和聚合健康状态。
 
 融合工作台提供服务健康概览、整体可用率、探测延迟、自动刷新、故障提示以及组织管理、知识问答和知识源同步快捷入口。
