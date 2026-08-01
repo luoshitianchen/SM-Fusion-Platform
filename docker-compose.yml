@@ -1,0 +1,43 @@
+services:
+  sm-erp:
+    build: https://github.com/luoshitianchen/SM-ERP.git#main
+    ports: ["127.0.0.1:8100:8100"]
+    environment:
+      ERP_DATABASE_PATH: /app/data/erp.db
+      ERP_ENV: development
+      ERP_BOOTSTRAP_PASSWORD: ${ERP_BOOTSTRAP_PASSWORD:-CHANGE_FOR_LOCAL_DEMO}
+      ERP_SM4_KEY_HEX: ${ERP_SM4_KEY_HEX:-00112233445566778899aabbccddeeff}
+      ERP_KNOWLEDGE_BOT_INTEGRATION_KEY: ${FUSION_INTEGRATION_KEY:-REPLACE_WITH_SHARED_RANDOM_KEY}
+      ERP_ALLOWED_HOSTS: sm-erp,localhost,127.0.0.1
+    volumes: ["erp-data:/app/data"]
+    restart: unless-stopped
+  knowledge-bot:
+    build: https://github.com/luoshitianchen/SM-knowledge-bot.git#main
+    ports: ["127.0.0.1:8010:8000"]
+    environment:
+      DATABASE_PATH: /app/data/knowledge_bot.db
+      KB_ENV: development
+      SEED_DEMO_DATA: "false"
+      ERP_AUTH_URL: http://sm-erp:8100/api/integrations/knowledge-bot/auth
+      ERP_INTEGRATION_KEY: ${FUSION_INTEGRATION_KEY:-REPLACE_WITH_SHARED_RANDOM_KEY}
+      ERP_VERIFY_TLS: "false"
+      KB_ALLOWED_HOSTS: knowledge-bot,localhost,127.0.0.1
+      CORS_ORIGINS: http://127.0.0.1:8200
+    volumes: ["kb-data:/app/data"]
+    depends_on: [sm-erp]
+    restart: unless-stopped
+  fusion-portal:
+    build: .
+    ports: ["127.0.0.1:8200:8200"]
+    environment:
+      ERP_INTERNAL_URL: http://sm-erp:8100
+      KB_INTERNAL_URL: http://knowledge-bot:8000
+    depends_on: [sm-erp, knowledge-bot]
+    restart: unless-stopped
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+volumes:
+  erp-data:
+  kb-data:
