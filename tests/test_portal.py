@@ -29,7 +29,7 @@ def test_version_endpoint_is_stable():
     with TestClient(app) as client:
         response = client.get("/api/version")
         assert response.status_code == 200
-        assert response.json()["version"] == "1.2.0"
+        assert response.json()["version"] == "1.3.0"
 
 
 def test_service_catalog_and_semantic_versions_are_valid():
@@ -43,3 +43,4 @@ def test_governance_exposes_enterprise_ownership():
         payload = client.get("/api/governance").json()
         assert "平台工程部" in payload["owners"]
         assert payload["tiers"]["P1"] == 2
+        assert "ISO27001" in payload["compliance"]

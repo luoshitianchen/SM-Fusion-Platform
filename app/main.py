@@ -16,7 +16,7 @@ from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import FileResponse
 
 CATALOG_PATH = Path(os.getenv("FUSION_SERVICE_CATALOG", "config/services.json"))
-VERSION = "1.2.0"
+VERSION = "1.3.0"
 REQUEST_ID_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$")
 
 
@@ -26,7 +26,7 @@ def load_services() -> list[dict[str, str]]:
         services = json.loads(CATALOG_PATH.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
         raise RuntimeError(f"服务目录不可用: {CATALOG_PATH}") from exc
-    required = {"id", "name", "internal_url", "public_url", "description", "owner", "tier", "slo", "environment"}
+    required = {"id", "name", "internal_url", "public_url", "description", "owner", "tier", "slo", "environment", "service_version", "tenant_scope", "compliance", "contact"}
     if not isinstance(services, list) or not services or any(not isinstance(item, dict) or not required <= item.keys() for item in services):
         raise RuntimeError("服务目录格式无效")
     identifiers = [str(item["id"]) for item in services]
@@ -43,6 +43,8 @@ def load_services() -> list[dict[str, str]]:
             raise RuntimeError("服务目录 health_path 格式无效")
         if item["tier"] not in {"P0", "P1", "P2", "P3"} or not 90 <= float(item["slo"]) <= 100:
             raise RuntimeError("服务目录 tier 或 slo 格式无效")
+        if not re.fullmatch(r"\d+\.\d+\.\d+", str(item["service_version"])) or not isinstance(item["compliance"], list) or not item["compliance"] or "@" not in str(item["contact"]):
+            raise RuntimeError("服务目录版本、合规标签或责任联系方式无效")
     return services
 
 app = FastAPI(title="SM Fusion Platform", version=VERSION, docs_url=None, redoc_url=None)
@@ -79,7 +81,7 @@ async def probe(config: dict[str, str]) -> dict[str, object]:
         state = "healthy"
     except (httpx.HTTPError, ValueError):
         state = "unavailable"
-    return {"id": config["id"], "name": config["name"], "description": config["description"], "url": config["public_url"], "category": config.get("category", "企业应用"), "owner": config["owner"], "tier": config["tier"], "slo": float(config["slo"]), "environment": config["environment"], "status": state, "latency_ms": round((time.perf_counter() - started) * 1000, 2)}
+    return {"id": config["id"], "name": config["name"], "description": config["description"], "url": config["public_url"], "category": config.get("category", "企业应用"), "owner": config["owner"], "tier": config["tier"], "slo": float(config["slo"]), "environment": config["environment"], "service_version": config["service_version"], "tenant_scope": config["tenant_scope"], "compliance": config["compliance"], "contact": config["contact"], "status": state, "latency_ms": round((time.perf_counter() - started) * 1000, 2)}
 
 
 async def probe_all() -> list[dict[str, object]]:
@@ -138,7 +140,7 @@ async def overview(request: Request) -> dict[str, object]:
 async def governance(request: Request) -> dict[str, object]:
     services = resolve_public_urls(await probe_all(), request)
     owners = sorted({str(item["owner"]) for item in services})
-    return {"owners": owners, "environments": sorted({str(item["environment"]) for item in services}), "tiers": {tier: sum(item["tier"] == tier for item in services) for tier in ("P0", "P1", "P2", "P3")}, "services": services}
+    return {"owners": owners, "environments": sorted({str(item["environment"]) for item in services}), "tenancy": sorted({str(item["tenant_scope"]) for item in services}), "compliance": sorted({label for item in services for label in item["compliance"]}), "tiers": {tier: sum(item["tier"] == tier for item in services) for tier in ("P0", "P1", "P2", "P3")}, "services": services}
 
 
 @app.get("/api/version")
