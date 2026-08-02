@@ -1,5 +1,6 @@
 from fastapi.testclient import TestClient
-from app.main import app
+from app.main import app, load_services
+from desktop.main import version_tuple
 
 
 def test_portal_and_health():
@@ -26,4 +27,10 @@ def test_version_endpoint_is_stable():
     with TestClient(app) as client:
         response = client.get("/api/version")
         assert response.status_code == 200
-        assert response.json()["version"] == "1.0.0"
+        assert response.json()["version"] == "1.1.0"
+
+
+def test_service_catalog_and_semantic_versions_are_valid():
+    services = load_services()
+    assert len({service["id"] for service in services}) == len(services)
+    assert version_tuple("1.1.0") > version_tuple("1.0.2")

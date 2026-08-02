@@ -10,6 +10,10 @@ from tkinter import messagebox, ttk
 
 import requests
 
+DESKTOP_VERSION = "1.1.0"
+LATEST_RELEASE_API = "https://api.github.com/repos/luoshitianchen/SM-Fusion-Platform/releases/latest"
+RELEASES_URL = "https://github.com/luoshitianchen/SM-Fusion-Platform/releases/latest"
+
 
 def desktop_config_path() -> str:
     base = os.path.dirname(sys.executable if getattr(sys, "frozen", False) else __file__)
@@ -21,7 +25,10 @@ def portal_url() -> str:
         return configured.rstrip("/")
     try:
         with open(desktop_config_path(), encoding="utf-8") as handle:
-            return str(json.load(handle)["portal_url"]).rstrip("/")
+            value = str(json.load(handle)["portal_url"]).rstrip("/")
+            if not value.startswith(("http://", "https://")) or "@" in value.split("://", 1)[-1].split("/", 1)[0]:
+                raise ValueError("portal_url must be HTTP(S) without credentials")
+            return value
     except (OSError, KeyError, TypeError, ValueError, json.JSONDecodeError):
         return "http://127.0.0.1:8200"
 
@@ -38,6 +45,7 @@ class FusionDesktop(tk.Tk):
         self._configure_styles()
         self._build_layout()
         self.refresh()
+        threading.Thread(target=self._check_update, daemon=True).start()
 
     def _configure_styles(self) -> None:
         style = ttk.Style(self)
@@ -57,7 +65,7 @@ class FusionDesktop(tk.Tk):
         root.pack(fill="both", expand=True)
         header = ttk.Frame(root, style="Root.TFrame")
         header.pack(fill="x")
-        ttk.Label(header, text="SM · ENTERPRISE AI FABRIC", style="Body.TLabel").pack(side="left")
+        ttk.Label(header, text=f"SM · ENTERPRISE AI FABRIC  v{DESKTOP_VERSION}", style="Body.TLabel").pack(side="left")
         self.state_label = ttk.Label(header, text="正在连接", style="Body.TLabel")
         self.state_label.pack(side="right")
         ttk.Label(root, text="多态融合企业智能平台", style="Title.TLabel").pack(anchor="w", pady=(38, 8))
@@ -66,6 +74,8 @@ class FusionDesktop(tk.Tk):
         toolbar.pack(fill="x", pady=(24, 14))
         ttk.Button(toolbar, text="刷新状态", style="Primary.TButton", command=self.refresh).pack(side="left")
         ttk.Button(toolbar, text="打开融合门户", command=lambda: webbrowser.open(self.base_url)).pack(side="left", padx=10)
+        self.update_button = ttk.Button(toolbar, text="检查更新", command=lambda: webbrowser.open(RELEASES_URL))
+        self.update_button.pack(side="left")
         ttk.Label(toolbar, text=f"服务地址：{self.base_url}", style="Body.TLabel").pack(side="right")
         self.summary = ttk.Label(root, text="服务状态加载中", style="Body.TLabel")
         self.summary.pack(anchor="w", pady=(4, 12))
@@ -108,6 +118,25 @@ class FusionDesktop(tk.Tk):
         self.state_label.configure(text="门户连接失败")
         self.summary.configure(text="请检查本地 Docker 服务或服务器地址配置")
         messagebox.showwarning("SM Fusion Platform", f"融合门户暂不可用。\n\n{detail}")
+
+    def _check_update(self) -> None:
+        try:
+            response = requests.get(LATEST_RELEASE_API, headers={"Accept": "application/vnd.github+json", "User-Agent": f"SM-Fusion-Desktop/{DESKTOP_VERSION}"}, timeout=5)
+            response.raise_for_status()
+            latest = str(response.json().get("tag_name", "")).lstrip("v")
+            if version_tuple(latest) > version_tuple(DESKTOP_VERSION):
+                self.after(0, lambda: self.update_button.configure(text=f"发现 v{latest}"))
+            else:
+                self.after(0, lambda: self.update_button.configure(text="已是最新版"))
+        except (requests.RequestException, ValueError, TypeError):
+            self.after(0, lambda: self.update_button.configure(text="发布页"))
+
+
+def version_tuple(value: str) -> tuple[int, int, int]:
+    parts = value.split(".")
+    if len(parts) != 3 or any(not part.isdigit() for part in parts):
+        raise ValueError("invalid semantic version")
+    return tuple(int(part) for part in parts)
 
 
 def main() -> int:

@@ -2,6 +2,8 @@
 
 **桌面正式版：** [查看最新发布](https://github.com/luoshitianchen/SM-Fusion-Platform/releases/latest)
 
+当前版本：`v1.1.0`。桌面端会检查 GitHub 最新正式版本，仅提示并打开发布页，不会静默下载或执行更新。
+
 多态融合企业平台，将 `SM-ERP` 的身份与组织治理、`SM-knowledge-bot` 的 RAG 与多 Agent 能力统一编排，并提供企业融合门户和聚合健康状态。
 
 融合工作台提供服务健康概览、整体可用率、探测延迟、自动刷新、故障提示以及组织管理、知识问答和知识源同步快捷入口。

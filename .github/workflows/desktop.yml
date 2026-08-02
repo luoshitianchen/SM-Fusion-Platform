@@ -21,6 +21,14 @@ jobs:
           Copy-Item desktop/start.cmd,desktop/main.py,desktop/requirements.txt,desktop/desktop-config.example.json,desktop/README.md dist/SM-Fusion-Platform/
           Compress-Archive -Path dist/SM-Fusion-Platform/* -DestinationPath dist/SM-Fusion-Platform-Windows.zip
           (Get-FileHash dist/SM-Fusion-Platform-Windows.zip -Algorithm SHA256).Hash + '  SM-Fusion-Platform-Windows.zip' | Set-Content dist/SHA256SUMS.txt
+      - name: Microsoft Defender release gate
+        shell: pwsh
+        run: |
+          & "$env:ProgramFiles\Windows Defender\MpCmdRun.exe" -SignatureUpdate
+          & "$env:ProgramFiles\Windows Defender\MpCmdRun.exe" -Scan -ScanType 3 -File (Resolve-Path 'dist/SM-Fusion-Platform').Path
+          if ($LASTEXITCODE -ne 0) { throw 'Defender rejected the application directory' }
+          & "$env:ProgramFiles\Windows Defender\MpCmdRun.exe" -Scan -ScanType 3 -File (Resolve-Path 'dist/SM-Fusion-Platform-Windows.zip').Path
+          if ($LASTEXITCODE -ne 0) { throw 'Defender rejected the release archive' }
       - uses: actions/upload-artifact@v4
         with:
           name: SM-Fusion-Platform-windows
@@ -31,6 +39,9 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
+          name: SM Fusion Platform Desktop ${{ github.ref_name }}
+          body: |
+            Windows 企业桌面端正式版。发布资产已通过 Microsoft Defender 构建门禁，并附带 SHA-256 校验文件。
           files: |
             dist/SM-Fusion-Platform-Windows.zip
             dist/SHA256SUMS.txt

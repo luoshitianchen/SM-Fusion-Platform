@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import json
 import os
+import re
 import time
 import threading
 from pathlib import Path
@@ -15,6 +16,8 @@ from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import FileResponse
 
 CATALOG_PATH = Path(os.getenv("FUSION_SERVICE_CATALOG", "config/services.json"))
+VERSION = "1.1.0"
+REQUEST_ID_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$")
 
 
 def load_services() -> list[dict[str, str]]:
@@ -26,9 +29,21 @@ def load_services() -> list[dict[str, str]]:
     required = {"id", "name", "internal_url", "public_url", "description"}
     if not isinstance(services, list) or not services or any(not isinstance(item, dict) or not required <= item.keys() for item in services):
         raise RuntimeError("服务目录格式无效")
+    identifiers = [str(item["id"]) for item in services]
+    if len(set(identifiers)) != len(identifiers) or any(not re.fullmatch(r"[a-z0-9][a-z0-9_-]{1,63}", identifier) for identifier in identifiers):
+        raise RuntimeError("服务目录项目 ID 必须唯一且格式有效")
+    for item in services:
+        for field in ("internal_url", "public_url"):
+            value = str(item[field]).replace("{host}", "localhost")
+            parsed = urlsplit(value)
+            if value != "/" and (parsed.scheme not in {"http", "https"} or not parsed.hostname or parsed.username or parsed.password):
+                raise RuntimeError(f"服务目录 {field} 必须是不含凭据的 HTTP(S) 地址")
+        health_path = str(item.get("health_path", "/health"))
+        if not health_path.startswith("/") or ".." in health_path:
+            raise RuntimeError("服务目录 health_path 格式无效")
     return services
 
-app = FastAPI(title="SM Fusion Platform", version="1.0.0", docs_url=None, redoc_url=None)
+app = FastAPI(title="SM Fusion Platform", version=VERSION, docs_url=None, redoc_url=None)
 PROBE_CACHE_SECONDS = int(os.getenv("FUSION_PROBE_CACHE_SECONDS", "5"))
 _probe_cache: tuple[float, list[dict[str, object]]] | None = None
 _probe_cache_lock = threading.Lock()
@@ -40,9 +55,10 @@ app.add_middleware(
 
 @app.middleware("http")
 async def security_headers(request: Request, call_next):
-    request_id = request.headers.get("X-Request-Id") or str(uuid4())
+    supplied_request_id = request.headers.get("X-Request-Id", "")
+    request_id = supplied_request_id if REQUEST_ID_PATTERN.fullmatch(supplied_request_id) else str(uuid4())
     response = await call_next(request)
-    response.headers["X-Request-Id"] = request_id[:64]
+    response.headers["X-Request-Id"] = request_id
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["X-Frame-Options"] = "DENY"
     response.headers["Referrer-Policy"] = "no-referrer"
