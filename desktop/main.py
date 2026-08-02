@@ -10,7 +10,7 @@ from tkinter import messagebox, ttk
 
 import requests
 
-DESKTOP_VERSION = "1.1.0"
+DESKTOP_VERSION = "1.2.0"
 LATEST_RELEASE_API = "https://api.github.com/repos/luoshitianchen/SM-Fusion-Platform/releases/latest"
 RELEASES_URL = "https://github.com/luoshitianchen/SM-Fusion-Platform/releases/latest"
 
@@ -111,7 +111,9 @@ class FusionDesktop(tk.Tk):
             ttk.Label(card, text="运行正常" if status else "暂不可用", style="Healthy.TLabel" if status else "Down.TLabel").pack(anchor="w")
             ttk.Label(card, text=service.get("name", "企业项目"), style="CardTitle.TLabel").pack(anchor="w", pady=(16, 6))
             ttk.Label(card, text=service.get("description", ""), style="CardBody.TLabel", wraplength=290).pack(anchor="w")
-            ttk.Label(card, text=f"{service.get('category', '企业应用')} · {service.get('latency_ms', 0)} ms", style="CardBody.TLabel").pack(anchor="w", pady=(12, 4))
+            governance = f"{service.get('category', '企业应用')} · {service.get('tier', 'P3')} · SLO {service.get('slo', '-')}%"
+            ttk.Label(card, text=governance, style="CardBody.TLabel").pack(anchor="w", pady=(12, 2))
+            ttk.Label(card, text=f"责任团队：{service.get('owner', '未配置')} · {service.get('latency_ms', 0)} ms", style="CardBody.TLabel").pack(anchor="w", pady=(2, 4))
             ttk.Button(card, text="进入系统", command=lambda url=service.get("url", self.base_url): webbrowser.open(url)).pack(anchor="w", pady=(12, 0))
 
     def _show_error(self, detail: str) -> None:

@@ -2,7 +2,9 @@
 
 **桌面正式版：** [查看最新发布](https://github.com/luoshitianchen/SM-Fusion-Platform/releases/latest)
 
-当前版本：`v1.1.0`。桌面端会检查 GitHub 最新正式版本，仅提示并打开发布页，不会静默下载或执行更新。
+当前版本：`v1.2.0`。桌面端会检查 GitHub 最新正式版本，仅提示并打开发布页，不会静默下载或执行更新。
+
+企业治理能力包括责任团队、业务等级、SLO 目标、运行环境、关键故障识别、项目搜索和状态筛选。新增项目时在 `config/services.json` 声明治理元数据即可纳入统一工作台。
 
 多态融合企业平台，将 `SM-ERP` 的身份与组织治理、`SM-knowledge-bot` 的 RAG 与多 Agent 能力统一编排，并提供企业融合门户和聚合健康状态。
 
