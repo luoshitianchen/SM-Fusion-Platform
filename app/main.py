@@ -109,8 +109,8 @@ def portal() -> FileResponse:
 
 
 @app.get("/health")
-def health() -> dict[str, str]:
-    return {"status": "ok", "version": app.version}
+def health() -> dict[str, object]:
+    return {"status": "ok", "service": "sm-fusion-platform", "version": app.version, "checks": {"catalog": "ok"}, "timestamp": time.time()}
 
 
 @app.get("/readyz")

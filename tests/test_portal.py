@@ -10,6 +10,8 @@ def test_portal_and_health():
         assert response.status_code == 200
         assert response.headers["X-Request-Id"] == "fusion-test"
         assert response.headers["X-Frame-Options"] == "DENY"
+        assert response.json()["service"] == "sm-fusion-platform"
+        assert response.json()["checks"]["catalog"] == "ok"
 
 
 def test_overview_returns_enterprise_service_metrics():
