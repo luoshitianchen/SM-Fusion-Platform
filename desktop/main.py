@@ -10,7 +10,7 @@ from tkinter import messagebox, ttk
 
 import requests
 
-DESKTOP_VERSION = "1.2.0"
+DESKTOP_VERSION = "2.0.0"
 LATEST_RELEASE_API = "https://api.github.com/repos/luoshitianchen/SM-Fusion-Platform/releases/latest"
 RELEASES_URL = "https://github.com/luoshitianchen/SM-Fusion-Platform/releases/latest"
 
