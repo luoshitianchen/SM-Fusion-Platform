@@ -138,3 +138,10 @@ docker compose up --build -d
 - 10 个新增企业项目统一升级到 `1.1.0`，新增 `/api/integration/manifest` 服务契约接口。
 - 服务目录为新增项目补充 `manifest_path`，后续可由融合门户、监控、CMDB、审计中心自动发现链路依赖。
 - 链路契约声明 dependencies、events、health_path、metrics_path、overview_path，作为真实互调前的企业治理基础。
+
+
+## v3.0 大版本安全治理升级
+- 融合门户版本升级到 `3.0.0`。
+- 10 个新增企业项目统一升级到 `2.0.0`，服务目录同步更新。
+- 新增项目统一具备请求体限制、接口速率限制和可选内部写入令牌。
+- 服务链路契约继续通过 `manifest_path` 纳管，便于后续网关、审计、监控和 CMDB 真实互联。

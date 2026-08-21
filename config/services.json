@@ -67,7 +67,7 @@
     "tier": "P0",
     "slo": 99.95,
     "environment": "production",
-    "service_version": "1.1.0",
+    "service_version": "2.0.0",
     "tenant_scope": "multi-tenant",
     "compliance": [
       "ISO27001",
@@ -89,7 +89,7 @@
     "tier": "P0",
     "slo": 99.95,
     "environment": "production",
-    "service_version": "1.1.0",
+    "service_version": "2.0.0",
     "tenant_scope": "multi-tenant",
     "compliance": [
       "ISO27001",
@@ -110,7 +110,7 @@
     "tier": "P1",
     "slo": 99.9,
     "environment": "production",
-    "service_version": "1.1.0",
+    "service_version": "2.0.0",
     "tenant_scope": "multi-tenant",
     "compliance": [
       "ISO27001",
@@ -131,7 +131,7 @@
     "tier": "P1",
     "slo": 99.9,
     "environment": "production",
-    "service_version": "1.1.0",
+    "service_version": "2.0.0",
     "tenant_scope": "multi-tenant",
     "compliance": [
       "ISO27001",
@@ -152,7 +152,7 @@
     "tier": "P1",
     "slo": 99.5,
     "environment": "production",
-    "service_version": "1.1.0",
+    "service_version": "2.0.0",
     "tenant_scope": "multi-tenant",
     "compliance": [
       "SBOM",
@@ -173,7 +173,7 @@
     "tier": "P2",
     "slo": 99.5,
     "environment": "production",
-    "service_version": "1.1.0",
+    "service_version": "2.0.0",
     "tenant_scope": "multi-tenant",
     "compliance": [
       "ISO27001",
@@ -194,7 +194,7 @@
     "tier": "P1",
     "slo": 99.5,
     "environment": "production",
-    "service_version": "1.1.0",
+    "service_version": "2.0.0",
     "tenant_scope": "data-domain",
     "compliance": [
       "数据脱敏",
@@ -215,7 +215,7 @@
     "tier": "P2",
     "slo": 99.0,
     "environment": "production",
-    "service_version": "1.1.0",
+    "service_version": "2.0.0",
     "tenant_scope": "multi-tenant",
     "compliance": [
       "SLA",
@@ -236,7 +236,7 @@
     "tier": "P1",
     "slo": 99.5,
     "environment": "production",
-    "service_version": "1.1.0",
+    "service_version": "2.0.0",
     "tenant_scope": "asset-domain",
     "compliance": [
       "资产治理",
@@ -257,7 +257,7 @@
     "tier": "P1",
     "slo": 99.5,
     "environment": "production",
-    "service_version": "1.1.0",
+    "service_version": "2.0.0",
     "tenant_scope": "multi-tenant",
     "compliance": [
       "AI审计",
