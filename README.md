@@ -132,3 +132,9 @@ docker compose up --build -d
 ```
 
 统一入口：`http://127.0.0.1:8200`。
+
+
+## v2.5 链路契约升级
+- 10 个新增企业项目统一升级到 `1.1.0`，新增 `/api/integration/manifest` 服务契约接口。
+- 服务目录为新增项目补充 `manifest_path`，后续可由融合门户、监控、CMDB、审计中心自动发现链路依赖。
+- 链路契约声明 dependencies、events、health_path、metrics_path、overview_path，作为真实互调前的企业治理基础。

@@ -67,7 +67,7 @@
     "tier": "P0",
     "slo": 99.95,
     "environment": "production",
-    "service_version": "1.0.0",
+    "service_version": "1.1.0",
     "tenant_scope": "multi-tenant",
     "compliance": [
       "ISO27001",
@@ -78,7 +78,8 @@
     "internal_url": "http://sm-iam:8300",
     "public_url": "http://{host}:8300",
     "health_path": "/health",
-    "description": "统一身份认证中心：SSO、MFA、OIDC、账号生命周期与权限策略"
+    "description": "统一身份认证中心：SSO、MFA、OIDC、账号生命周期与权限策略",
+    "manifest_path": "/api/integration/manifest"
   },
   {
     "id": "api-gateway",
@@ -88,7 +89,7 @@
     "tier": "P0",
     "slo": 99.95,
     "environment": "production",
-    "service_version": "1.0.0",
+    "service_version": "1.1.0",
     "tenant_scope": "multi-tenant",
     "compliance": [
       "ISO27001",
@@ -98,7 +99,8 @@
     "internal_url": "http://sm-api-gateway:8310",
     "public_url": "http://{host}:8310",
     "health_path": "/health",
-    "description": "企业 API 网关：鉴权、限流、熔断、灰度与请求审计"
+    "description": "企业 API 网关：鉴权、限流、熔断、灰度与请求审计",
+    "manifest_path": "/api/integration/manifest"
   },
   {
     "id": "audit-log",
@@ -108,7 +110,7 @@
     "tier": "P1",
     "slo": 99.9,
     "environment": "production",
-    "service_version": "1.0.0",
+    "service_version": "1.1.0",
     "tenant_scope": "multi-tenant",
     "compliance": [
       "ISO27001",
@@ -118,7 +120,8 @@
     "internal_url": "http://sm-audit-log-center:8320",
     "public_url": "http://{host}:8320",
     "health_path": "/health",
-    "description": "统一审计与日志中心：操作审计、日志检索、异常行为检测与合规报表"
+    "description": "统一审计与日志中心：操作审计、日志检索、异常行为检测与合规报表",
+    "manifest_path": "/api/integration/manifest"
   },
   {
     "id": "observability",
@@ -128,7 +131,7 @@
     "tier": "P1",
     "slo": 99.9,
     "environment": "production",
-    "service_version": "1.0.0",
+    "service_version": "1.1.0",
     "tenant_scope": "multi-tenant",
     "compliance": [
       "ISO27001",
@@ -138,7 +141,8 @@
     "internal_url": "http://sm-observability:8330",
     "public_url": "http://{host}:8330",
     "health_path": "/health",
-    "description": "企业监控运维平台：健康检测、SLO、告警、延迟与错误率"
+    "description": "企业监控运维平台：健康检测、SLO、告警、延迟与错误率",
+    "manifest_path": "/api/integration/manifest"
   },
   {
     "id": "devsecops",
@@ -148,7 +152,7 @@
     "tier": "P1",
     "slo": 99.5,
     "environment": "production",
-    "service_version": "1.0.0",
+    "service_version": "1.1.0",
     "tenant_scope": "multi-tenant",
     "compliance": [
       "SBOM",
@@ -158,7 +162,8 @@
     "internal_url": "http://sm-devsecops:8340",
     "public_url": "http://{host}:8340",
     "health_path": "/health",
-    "description": "安全研发平台：代码扫描、依赖审计、镜像扫描、SBOM 与流水线"
+    "description": "安全研发平台：代码扫描、依赖审计、镜像扫描、SBOM 与流水线",
+    "manifest_path": "/api/integration/manifest"
   },
   {
     "id": "workflow",
@@ -168,7 +173,7 @@
     "tier": "P2",
     "slo": 99.5,
     "environment": "production",
-    "service_version": "1.0.0",
+    "service_version": "1.1.0",
     "tenant_scope": "multi-tenant",
     "compliance": [
       "ISO27001",
@@ -178,7 +183,8 @@
     "internal_url": "http://sm-workflow-approval:8350",
     "public_url": "http://{host}:8350",
     "health_path": "/health",
-    "description": "企业文档与流程审批系统：报销、采购、合同、归档与审批审计"
+    "description": "企业文档与流程审批系统：报销、采购、合同、归档与审批审计",
+    "manifest_path": "/api/integration/manifest"
   },
   {
     "id": "data-governance",
@@ -188,7 +194,7 @@
     "tier": "P1",
     "slo": 99.5,
     "environment": "production",
-    "service_version": "1.0.0",
+    "service_version": "1.1.0",
     "tenant_scope": "data-domain",
     "compliance": [
       "数据脱敏",
@@ -198,7 +204,8 @@
     "internal_url": "http://sm-data-governance:8360",
     "public_url": "http://{host}:8360",
     "health_path": "/health",
-    "description": "数据治理平台：数据目录、权限、脱敏、质量检测与数据血缘"
+    "description": "数据治理平台：数据目录、权限、脱敏、质量检测与数据血缘",
+    "manifest_path": "/api/integration/manifest"
   },
   {
     "id": "service-desk",
@@ -208,7 +215,7 @@
     "tier": "P2",
     "slo": 99.0,
     "environment": "production",
-    "service_version": "1.0.0",
+    "service_version": "1.1.0",
     "tenant_scope": "multi-tenant",
     "compliance": [
       "SLA",
@@ -218,7 +225,8 @@
     "internal_url": "http://sm-service-desk:8370",
     "public_url": "http://{host}:8370",
     "health_path": "/health",
-    "description": "企业智能客服与工单系统：自动分派、SLA、知识联动与工单闭环"
+    "description": "企业智能客服与工单系统：自动分派、SLA、知识联动与工单闭环",
+    "manifest_path": "/api/integration/manifest"
   },
   {
     "id": "cmdb",
@@ -228,7 +236,7 @@
     "tier": "P1",
     "slo": 99.5,
     "environment": "production",
-    "service_version": "1.0.0",
+    "service_version": "1.1.0",
     "tenant_scope": "asset-domain",
     "compliance": [
       "资产治理",
@@ -238,7 +246,8 @@
     "internal_url": "http://sm-cmdb:8380",
     "public_url": "http://{host}:8380",
     "health_path": "/health",
-    "description": "资产管理系统：服务器、应用、数据库、负责人和依赖拓扑"
+    "description": "资产管理系统：服务器、应用、数据库、负责人和依赖拓扑",
+    "manifest_path": "/api/integration/manifest"
   },
   {
     "id": "agentops",
@@ -248,7 +257,7 @@
     "tier": "P1",
     "slo": 99.5,
     "environment": "production",
-    "service_version": "1.0.0",
+    "service_version": "1.1.0",
     "tenant_scope": "multi-tenant",
     "compliance": [
       "AI审计",
@@ -258,6 +267,7 @@
     "internal_url": "http://sm-agentops:8390",
     "public_url": "http://{host}:8390",
     "health_path": "/health",
-    "description": "企业 AI Agent 管理平台：Agent 编排、Prompt 管理、工具权限、调用审计与成本统计"
+    "description": "企业 AI Agent 管理平台：Agent 编排、Prompt 管理、工具权限、调用审计与成本统计",
+    "manifest_path": "/api/integration/manifest"
   }
 ]
