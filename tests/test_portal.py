@@ -31,7 +31,7 @@ def test_version_endpoint_is_stable():
     with TestClient(app) as client:
         response = client.get("/api/version")
         assert response.status_code == 200
-        assert response.json()["version"] == "2.0.0"
+        assert response.json()["version"] == "2.3.0"
 
 
 def test_service_catalog_and_semantic_versions_are_valid():
@@ -46,3 +46,12 @@ def test_governance_exposes_enterprise_ownership():
         assert "平台工程部" in payload["owners"]
         assert payload["tiers"]["P1"] == 2
         assert "ISO27001" in payload["compliance"]
+
+def test_ops_metrics_endpoint_reports_runtime_counts():
+    with TestClient(app) as client:
+        client.get("/health")
+        response = client.get("/api/ops/metrics")
+        assert response.status_code == 200
+        payload = response.json()
+        assert payload["service"] == "sm-fusion-platform"
+        assert payload["requests_total"] >= 1

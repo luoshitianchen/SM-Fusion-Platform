@@ -16,7 +16,7 @@ from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import FileResponse
 
 CATALOG_PATH = Path(os.getenv("FUSION_SERVICE_CATALOG", "config/services.json"))
-VERSION = "2.0.0"
+VERSION = "2.3.0"
 REQUEST_ID_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$")
 
 
@@ -51,6 +51,8 @@ app = FastAPI(title="SM Fusion Platform", version=VERSION, docs_url=None, redoc_
 PROBE_CACHE_SECONDS = int(os.getenv("FUSION_PROBE_CACHE_SECONDS", "5"))
 _probe_cache: tuple[float, list[dict[str, object]]] | None = None
 _probe_cache_lock = threading.Lock()
+metrics_lock = threading.Lock()
+metrics = {"requests_total": 0, "errors_total": 0}
 app.add_middleware(
     TrustedHostMiddleware,
     allowed_hosts=[item.strip() for item in os.getenv("FUSION_ALLOWED_HOSTS", "localhost,127.0.0.1,testserver").split(",") if item.strip()],
@@ -62,12 +64,16 @@ async def security_headers(request: Request, call_next):
     supplied_request_id = request.headers.get("X-Request-Id", "")
     request_id = supplied_request_id if REQUEST_ID_PATTERN.fullmatch(supplied_request_id) else str(uuid4())
     response = await call_next(request)
+    with metrics_lock:
+        metrics["requests_total"] += 1
+        if response.status_code >= 500:
+            metrics["errors_total"] += 1
     response.headers["X-Request-Id"] = request_id
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["X-Frame-Options"] = "DENY"
     response.headers["Referrer-Policy"] = "no-referrer"
-    response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
-    response.headers["Content-Security-Policy"] = "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; frame-ancestors 'none'"
+    response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+    response.headers["Content-Security-Policy"] = "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
     if os.getenv("FUSION_ENVIRONMENT", "development") == "production":
         response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
     response.headers["Cache-Control"] = "no-store" if request.url.path.startswith("/api/") else "no-cache"
@@ -143,6 +149,13 @@ async def governance(request: Request) -> dict[str, object]:
     services = resolve_public_urls(await probe_all(), request)
     owners = sorted({str(item["owner"]) for item in services})
     return {"owners": owners, "environments": sorted({str(item["environment"]) for item in services}), "tenancy": sorted({str(item["tenant_scope"]) for item in services}), "compliance": sorted({label for item in services for label in item["compliance"]}), "tiers": {tier: sum(item["tier"] == tier for item in services) for tier in ("P0", "P1", "P2", "P3")}, "services": services}
+
+
+@app.get("/api/ops/metrics")
+def ops_metrics() -> dict[str, object]:
+    with metrics_lock:
+        snapshot = dict(metrics)
+    return {"service": "sm-fusion-platform", "version": app.version, "requests_total": int(snapshot["requests_total"]), "errors_total": int(snapshot["errors_total"])}
 
 
 @app.get("/api/version")

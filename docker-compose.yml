@@ -11,6 +11,11 @@ services:
       ERP_ALLOWED_HOSTS: sm-erp,localhost,127.0.0.1
     volumes: ["erp-data:/app/data"]
     restart: unless-stopped
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=64m"]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+    pids_limit: 100
   knowledge-bot:
     build: https://github.com/luoshitianchen/SM-knowledge-bot.git#main
     ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8010:8000"]
@@ -26,6 +31,11 @@ services:
     volumes: ["kb-data:/app/data"]
     depends_on: [sm-erp]
     restart: unless-stopped
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=64m"]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+    pids_limit: 100
   fusion-portal:
     build: .
     ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8200:8200"]
@@ -37,6 +47,7 @@ services:
     tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
     security_opt: ["no-new-privileges:true"]
     cap_drop: ["ALL"]
+    pids_limit: 100
 volumes:
   erp-data:
   kb-data:
