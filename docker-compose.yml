@@ -36,12 +36,134 @@ services:
     security_opt: ["no-new-privileges:true"]
     cap_drop: ["ALL"]
     pids_limit: 100
+  sm-iam:
+    build: https://github.com/luoshitianchen/SM-IAM.git#main
+    ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8300:8300"]
+    environment:
+      SM_ALLOWED_HOSTS: sm-iam,localhost,127.0.0.1
+    restart: unless-stopped
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+    pids_limit: 100
+  sm-api-gateway:
+    build: https://github.com/luoshitianchen/SM-API-Gateway.git#main
+    ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8310:8310"]
+    environment:
+      SM_ALLOWED_HOSTS: sm-api-gateway,localhost,127.0.0.1
+    restart: unless-stopped
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+    pids_limit: 100
+  sm-audit-log-center:
+    build: https://github.com/luoshitianchen/SM-Audit-Log-Center.git#main
+    ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8320:8320"]
+    environment:
+      SM_ALLOWED_HOSTS: sm-audit-log-center,localhost,127.0.0.1
+    restart: unless-stopped
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+    pids_limit: 100
+  sm-observability:
+    build: https://github.com/luoshitianchen/SM-Observability.git#main
+    ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8330:8330"]
+    environment:
+      SM_ALLOWED_HOSTS: sm-observability,localhost,127.0.0.1
+    restart: unless-stopped
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+    pids_limit: 100
+  sm-devsecops:
+    build: https://github.com/luoshitianchen/SM-DevSecOps.git#main
+    ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8340:8340"]
+    environment:
+      SM_ALLOWED_HOSTS: sm-devsecops,localhost,127.0.0.1
+    restart: unless-stopped
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+    pids_limit: 100
+  sm-workflow-approval:
+    build: https://github.com/luoshitianchen/SM-Workflow-Approval.git#main
+    ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8350:8350"]
+    environment:
+      SM_ALLOWED_HOSTS: sm-workflow-approval,localhost,127.0.0.1
+    restart: unless-stopped
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+    pids_limit: 100
+  sm-data-governance:
+    build: https://github.com/luoshitianchen/SM-Data-Governance.git#main
+    ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8360:8360"]
+    environment:
+      SM_ALLOWED_HOSTS: sm-data-governance,localhost,127.0.0.1
+    restart: unless-stopped
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+    pids_limit: 100
+  sm-service-desk:
+    build: https://github.com/luoshitianchen/SM-Service-Desk.git#main
+    ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8370:8370"]
+    environment:
+      SM_ALLOWED_HOSTS: sm-service-desk,localhost,127.0.0.1
+    restart: unless-stopped
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+    pids_limit: 100
+  sm-cmdb:
+    build: https://github.com/luoshitianchen/SM-CMDB.git#main
+    ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8380:8380"]
+    environment:
+      SM_ALLOWED_HOSTS: sm-cmdb,localhost,127.0.0.1
+    restart: unless-stopped
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+    pids_limit: 100
+  sm-agentops:
+    build: https://github.com/luoshitianchen/SM-AgentOps.git#main
+    ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8390:8390"]
+    environment:
+      SM_ALLOWED_HOSTS: sm-agentops,localhost,127.0.0.1
+    restart: unless-stopped
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+    pids_limit: 100
   fusion-portal:
     build: .
     ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8200:8200"]
     environment:
       FUSION_SERVICE_CATALOG: /app/config/services.json
-    depends_on: [sm-erp, knowledge-bot]
+    depends_on:
+      - sm-erp
+      - knowledge-bot
+      - sm-iam
+      - sm-api-gateway
+      - sm-audit-log-center
+      - sm-observability
+      - sm-devsecops
+      - sm-workflow-approval
+      - sm-data-governance
+      - sm-service-desk
+      - sm-cmdb
+      - sm-agentops
     restart: unless-stopped
     read_only: true
     tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]

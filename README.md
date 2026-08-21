@@ -115,3 +115,20 @@ Invoke-RestMethod http://127.0.0.1:8200/api/ops/metrics
 - 门户版本统一提升到 `2.3.0`。
 - CSP 增加 `connect-src`、`img-src`、`form-action`，收紧浏览器侧资源加载边界。
 - 继续保留容器只读文件系统、能力剥离、进程数限制和本地绑定默认策略。
+
+## v2.4 全项目链路打通
+- 服务目录从 3 个项目扩展到 13 个项目，统一接入 ERP、知识库、IAM、API 网关、审计中心、监控、DevSecOps、审批、数据治理、服务台、CMDB 与 AgentOps。
+- `docker-compose.yml` 已纳入 10 个新增项目，默认仍全部绑定 `127.0.0.1`，通过融合门户统一探测健康状态。
+- `/api/overview`、`/api/services`、`/api/governance` 会自动展示全部项目的责任团队、SLO、合规标签、租户边界和运行状态。
+
+### 全量链路启动
+
+```powershell
+git clone https://github.com/luoshitianchen/SM-Fusion-Platform.git
+cd SM-Fusion-Platform
+Copy-Item .env.example .env
+# 修改 .env 中的 ERP_BOOTSTRAP_PASSWORD、ERP_SM4_KEY_HEX、FUSION_INTEGRATION_KEY
+docker compose up --build -d
+```
+
+统一入口：`http://127.0.0.1:8200`。

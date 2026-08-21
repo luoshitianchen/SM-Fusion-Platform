@@ -19,8 +19,8 @@ def test_overview_returns_enterprise_service_metrics():
         response = client.get("/api/overview")
         assert response.status_code == 200
         payload = response.json()
-        assert payload["total"] == 3
-        assert len(payload["services"]) == 3
+        assert payload["total"] == 13
+        assert len(payload["services"]) == 13
         assert all("latency_ms" in service for service in payload["services"])
         assert payload["platform"]["name"] == "SM Fusion Platform"
         assert payload["business_status"] in {"operational", "degraded", "critical"}
@@ -31,7 +31,7 @@ def test_version_endpoint_is_stable():
     with TestClient(app) as client:
         response = client.get("/api/version")
         assert response.status_code == 200
-        assert response.json()["version"] == "2.3.0"
+        assert response.json()["version"] == "2.4.0"
 
 
 def test_service_catalog_and_semantic_versions_are_valid():
@@ -44,8 +44,10 @@ def test_governance_exposes_enterprise_ownership():
     with TestClient(app) as client:
         payload = client.get("/api/governance").json()
         assert "平台工程部" in payload["owners"]
-        assert payload["tiers"]["P1"] == 2
+        assert payload["tiers"]["P1"] >= 7
         assert "ISO27001" in payload["compliance"]
+        assert "SM IAM" in {service["name"] for service in payload["services"]}
+        assert "SM AgentOps" in {service["name"] for service in payload["services"]}
 
 def test_ops_metrics_endpoint_reports_runtime_counts():
     with TestClient(app) as client:
@@ -55,3 +57,4 @@ def test_ops_metrics_endpoint_reports_runtime_counts():
         payload = response.json()
         assert payload["service"] == "sm-fusion-platform"
         assert payload["requests_total"] >= 1
+

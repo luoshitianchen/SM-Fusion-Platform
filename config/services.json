@@ -7,9 +7,12 @@
     "tier": "P1",
     "slo": 99.9,
     "environment": "production",
-    "service_version": "2.0.0",
+    "service_version": "2.3.0",
     "tenant_scope": "multi-tenant",
-    "compliance": ["ISO27001", "等保建设"],
+    "compliance": [
+      "ISO27001",
+      "等保建设"
+    ],
     "contact": "platform@example.invalid",
     "internal_url": "http://fusion-portal:8200",
     "public_url": "/",
@@ -24,9 +27,12 @@
     "tier": "P1",
     "slo": 99.9,
     "environment": "production",
-    "service_version": "2.0.0",
+    "service_version": "2.3.0",
     "tenant_scope": "multi-tenant",
-    "compliance": ["ISO27001", "国密SM3/SM4"],
+    "compliance": [
+      "ISO27001",
+      "国密SM3/SM4"
+    ],
     "contact": "erp-ops@example.invalid",
     "internal_url": "http://sm-erp:8100",
     "public_url": "http://{host}:8100",
@@ -41,13 +47,217 @@
     "tier": "P2",
     "slo": 99.5,
     "environment": "production",
-    "service_version": "2.0.0",
+    "service_version": "2.3.0",
     "tenant_scope": "department-isolated",
-    "compliance": ["ISO27001", "数据最小化"],
+    "compliance": [
+      "ISO27001",
+      "数据最小化"
+    ],
     "contact": "ai-platform@example.invalid",
     "internal_url": "http://knowledge-bot:8000",
     "public_url": "http://{host}:8010",
     "health_path": "/health",
     "description": "RAG、多轮对话、Agent 与权限知识检索"
+  },
+  {
+    "id": "iam",
+    "name": "SM IAM",
+    "category": "身份安全",
+    "owner": "身份平台部",
+    "tier": "P0",
+    "slo": 99.95,
+    "environment": "production",
+    "service_version": "1.0.0",
+    "tenant_scope": "multi-tenant",
+    "compliance": [
+      "ISO27001",
+      "MFA",
+      "OIDC"
+    ],
+    "contact": "iam-ops@example.invalid",
+    "internal_url": "http://sm-iam:8300",
+    "public_url": "http://{host}:8300",
+    "health_path": "/health",
+    "description": "统一身份认证中心：SSO、MFA、OIDC、账号生命周期与权限策略"
+  },
+  {
+    "id": "api-gateway",
+    "name": "SM API Gateway",
+    "category": "平台网关",
+    "owner": "平台工程部",
+    "tier": "P0",
+    "slo": 99.95,
+    "environment": "production",
+    "service_version": "1.0.0",
+    "tenant_scope": "multi-tenant",
+    "compliance": [
+      "ISO27001",
+      "API审计"
+    ],
+    "contact": "gateway-ops@example.invalid",
+    "internal_url": "http://sm-api-gateway:8310",
+    "public_url": "http://{host}:8310",
+    "health_path": "/health",
+    "description": "企业 API 网关：鉴权、限流、熔断、灰度与请求审计"
+  },
+  {
+    "id": "audit-log",
+    "name": "SM Audit Log Center",
+    "category": "安全合规",
+    "owner": "安全合规部",
+    "tier": "P1",
+    "slo": 99.9,
+    "environment": "production",
+    "service_version": "1.0.0",
+    "tenant_scope": "multi-tenant",
+    "compliance": [
+      "ISO27001",
+      "审计留痕"
+    ],
+    "contact": "audit-ops@example.invalid",
+    "internal_url": "http://sm-audit-log-center:8320",
+    "public_url": "http://{host}:8320",
+    "health_path": "/health",
+    "description": "统一审计与日志中心：操作审计、日志检索、异常行为检测与合规报表"
+  },
+  {
+    "id": "observability",
+    "name": "SM Observability",
+    "category": "运维监控",
+    "owner": "SRE团队",
+    "tier": "P1",
+    "slo": 99.9,
+    "environment": "production",
+    "service_version": "1.0.0",
+    "tenant_scope": "multi-tenant",
+    "compliance": [
+      "ISO27001",
+      "SLO治理"
+    ],
+    "contact": "sre@example.invalid",
+    "internal_url": "http://sm-observability:8330",
+    "public_url": "http://{host}:8330",
+    "health_path": "/health",
+    "description": "企业监控运维平台：健康检测、SLO、告警、延迟与错误率"
+  },
+  {
+    "id": "devsecops",
+    "name": "SM DevSecOps",
+    "category": "研发安全",
+    "owner": "研发效能部",
+    "tier": "P1",
+    "slo": 99.5,
+    "environment": "production",
+    "service_version": "1.0.0",
+    "tenant_scope": "multi-tenant",
+    "compliance": [
+      "SBOM",
+      "依赖审计"
+    ],
+    "contact": "devsecops@example.invalid",
+    "internal_url": "http://sm-devsecops:8340",
+    "public_url": "http://{host}:8340",
+    "health_path": "/health",
+    "description": "安全研发平台：代码扫描、依赖审计、镜像扫描、SBOM 与流水线"
+  },
+  {
+    "id": "workflow",
+    "name": "SM Workflow Approval",
+    "category": "流程审批",
+    "owner": "企业应用部",
+    "tier": "P2",
+    "slo": 99.5,
+    "environment": "production",
+    "service_version": "1.0.0",
+    "tenant_scope": "multi-tenant",
+    "compliance": [
+      "ISO27001",
+      "审批留痕"
+    ],
+    "contact": "workflow@example.invalid",
+    "internal_url": "http://sm-workflow-approval:8350",
+    "public_url": "http://{host}:8350",
+    "health_path": "/health",
+    "description": "企业文档与流程审批系统：报销、采购、合同、归档与审批审计"
+  },
+  {
+    "id": "data-governance",
+    "name": "SM Data Governance",
+    "category": "数据治理",
+    "owner": "数据平台部",
+    "tier": "P1",
+    "slo": 99.5,
+    "environment": "production",
+    "service_version": "1.0.0",
+    "tenant_scope": "data-domain",
+    "compliance": [
+      "数据脱敏",
+      "数据血缘"
+    ],
+    "contact": "data@example.invalid",
+    "internal_url": "http://sm-data-governance:8360",
+    "public_url": "http://{host}:8360",
+    "health_path": "/health",
+    "description": "数据治理平台：数据目录、权限、脱敏、质量检测与数据血缘"
+  },
+  {
+    "id": "service-desk",
+    "name": "SM Service Desk",
+    "category": "服务台",
+    "owner": "IT服务部",
+    "tier": "P2",
+    "slo": 99.0,
+    "environment": "production",
+    "service_version": "1.0.0",
+    "tenant_scope": "multi-tenant",
+    "compliance": [
+      "SLA",
+      "工单留痕"
+    ],
+    "contact": "it-service@example.invalid",
+    "internal_url": "http://sm-service-desk:8370",
+    "public_url": "http://{host}:8370",
+    "health_path": "/health",
+    "description": "企业智能客服与工单系统：自动分派、SLA、知识联动与工单闭环"
+  },
+  {
+    "id": "cmdb",
+    "name": "SM CMDB",
+    "category": "资产管理",
+    "owner": "基础架构部",
+    "tier": "P1",
+    "slo": 99.5,
+    "environment": "production",
+    "service_version": "1.0.0",
+    "tenant_scope": "asset-domain",
+    "compliance": [
+      "资产治理",
+      "依赖拓扑"
+    ],
+    "contact": "cmdb@example.invalid",
+    "internal_url": "http://sm-cmdb:8380",
+    "public_url": "http://{host}:8380",
+    "health_path": "/health",
+    "description": "资产管理系统：服务器、应用、数据库、负责人和依赖拓扑"
+  },
+  {
+    "id": "agentops",
+    "name": "SM AgentOps",
+    "category": "AI治理",
+    "owner": "智能平台部",
+    "tier": "P1",
+    "slo": 99.5,
+    "environment": "production",
+    "service_version": "1.0.0",
+    "tenant_scope": "multi-tenant",
+    "compliance": [
+      "AI审计",
+      "成本治理"
+    ],
+    "contact": "agentops@example.invalid",
+    "internal_url": "http://sm-agentops:8390",
+    "public_url": "http://{host}:8390",
+    "health_path": "/health",
+    "description": "企业 AI Agent 管理平台：Agent 编排、Prompt 管理、工具权限、调用审计与成本统计"
   }
 ]
