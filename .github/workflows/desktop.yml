@@ -29,7 +29,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Defender rejected the application directory' }
           & "$env:ProgramFiles\Windows Defender\MpCmdRun.exe" -Scan -ScanType 3 -File (Resolve-Path 'dist/SM-Fusion-Platform-Windows.zip').Path
           if ($LASTEXITCODE -ne 0) { throw 'Defender rejected the release archive' }
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: SM-Fusion-Platform-windows
           path: |
