@@ -83,13 +83,13 @@ async def security_headers(request: Request, call_next):
 async def probe(config: dict[str, str]) -> dict[str, object]:
     started = time.perf_counter()
     try:
-        async with httpx.AsyncClient(timeout=httpx.Timeout(3, connect=2)) as client:
+        async with httpx.AsyncClient(timeout=httpx.Timeout(1.5, connect=0.75), trust_env=False) as client:
             response = await client.get(f"{config['internal_url'].rstrip('/')}{config.get('health_path', '/health')}")
             response.raise_for_status()
         state = "healthy"
     except (httpx.HTTPError, ValueError):
         state = "unavailable"
-    return {"id": config["id"], "name": config["name"], "description": config["description"], "url": config["public_url"], "category": config.get("category", "企业应用"), "owner": config["owner"], "tier": config["tier"], "slo": float(config["slo"]), "environment": config["environment"], "service_version": config["service_version"], "tenant_scope": config["tenant_scope"], "compliance": config["compliance"], "contact": config["contact"], "status": state, "latency_ms": round((time.perf_counter() - started) * 1000, 2)}
+    return {"id": config["id"], "name": config["name"], "probe_target": config["internal_url"], "description": config["description"], "url": config["public_url"], "category": config.get("category", "企业应用"), "owner": config["owner"], "tier": config["tier"], "slo": float(config["slo"]), "environment": config["environment"], "service_version": config["service_version"], "tenant_scope": config["tenant_scope"], "compliance": config["compliance"], "contact": config["contact"], "status": state, "latency_ms": round((time.perf_counter() - started) * 1000, 2)}
 
 
 async def probe_all() -> list[dict[str, object]]:

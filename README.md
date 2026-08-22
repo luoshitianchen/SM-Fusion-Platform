@@ -201,3 +201,10 @@ docker compose -f docker-compose.data.yml up -d
 ```
 
 生产环境应使用托管 PostgreSQL/Redis/Qdrant，并通过 KMS 注入密码和连接凭据。
+
+## 全面检测结论（2026-08-22）
+- 13 个项目均已通过 Python 编译检查。
+- 核心服务测试：Knowledge Bot 18 passed、ERP 16 passed、Fusion 8 passed。
+- 10 个企业子项目均为 8 passed。
+- Fusion 依赖探测已关闭系统代理继承（`trust_env=False`），并将探测超时收紧为连接 0.75 秒、总计 1.5 秒，避免本地无依赖服务时长时间卡顿。
+- 本地单独启动门户时，依赖项目显示 `unavailable/degraded` 属于真实依赖未启动状态；部署完整 Compose/Kubernetes 链路后再验证整体 `healthy`。
