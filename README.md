@@ -208,3 +208,9 @@ docker compose -f docker-compose.data.yml up -d
 - 10 个企业子项目均为 8 passed。
 - Fusion 依赖探测已关闭系统代理继承（`trust_env=False`），并将探测超时收紧为连接 0.75 秒、总计 1.5 秒，避免本地无依赖服务时长时间卡顿。
 - 本地单独启动门户时，依赖项目显示 `unavailable/degraded` 属于真实依赖未启动状态；部署完整 Compose/Kubernetes 链路后再验证整体 `healthy`。
+
+
+## 2026-08-22 维护记录
+- 完成源码编译检查、单元测试和工作区状态检查。
+- 保持安全响应头、TrustedHost、限流、请求大小限制、国密 SM3/SM4 与内部令牌控制。
+- 维护建议：生产环境通过 KMS/HSM 注入密钥，依赖项目全部启动后再执行融合门户整体健康检查。
