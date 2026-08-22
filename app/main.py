@@ -166,3 +166,14 @@ def version() -> dict[str, str]:
 @app.get("/api/crypto/status")
 def crypto_status() -> dict[str, object]:
     return {"algorithm": "SM3/SM4", "sm3": "enabled", "sm4": "enabled", "services": 13}
+
+
+@app.get("/metrics")
+def prometheus_metrics() -> Response:
+    with metrics_lock:
+        snapshot = dict(metrics)
+    body = (
+        f"sm_fusion_requests_total {int(snapshot['requests_total'])}\n"
+        f"sm_fusion_errors_total {int(snapshot['errors_total'])}\n"
+    )
+    return Response(content=body, media_type="text/plain; version=0.0.4")
