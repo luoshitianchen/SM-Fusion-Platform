@@ -185,3 +185,19 @@ deploy/helm/sm-fusion-platform
 ```powershell
 helm upgrade --install sm-fusion ./deploy/helm/sm-fusion-platform -n sm-enterprise --create-namespace
 ```
+
+## v3.5 数据层与可观测性完善
+新增 `docker-compose.data.yml`，提供：
+- PostgreSQL 16
+- Redis 7 持久化
+- Qdrant 向量数据库
+- `/metrics` Prometheus 文本指标
+
+启动数据层：
+
+```powershell
+Copy-Item .env.example .env
+docker compose -f docker-compose.data.yml up -d
+```
+
+生产环境应使用托管 PostgreSQL/Redis/Qdrant，并通过 KMS 注入密码和连接凭据。

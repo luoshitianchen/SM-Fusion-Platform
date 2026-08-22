@@ -31,7 +31,7 @@ def test_version_endpoint_is_stable():
     with TestClient(app) as client:
         response = client.get("/api/version")
         assert response.status_code == 200
-        assert response.json()["version"] == "3.4.0"
+        assert response.json()["version"] == "3.5.0"
 
 
 def test_service_catalog_and_semantic_versions_are_valid():
@@ -66,3 +66,11 @@ def test_crypto_status():
         response = client.get('/api/crypto/status')
         assert response.status_code == 200
         assert response.json()['algorithm'] == 'SM3/SM4'
+
+
+
+def test_prometheus_metrics():
+    with TestClient(app) as client:
+        response = client.get('/metrics')
+        assert response.status_code == 200
+        assert 'sm_fusion_requests_total' in response.text
