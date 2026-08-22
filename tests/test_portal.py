@@ -20,7 +20,7 @@ def test_overview_returns_enterprise_service_metrics():
         assert response.status_code == 200
         payload = response.json()
         assert payload["total"] == 28
-        assert len(payload["services"]) == 22
+        assert len(payload["services"]) == 28
         assert all("latency_ms" in service for service in payload["services"])
         assert payload["platform"]["name"] == "SM Fusion Platform"
         assert payload["business_status"] in {"operational", "degraded", "critical"}
@@ -105,4 +105,5 @@ def test_oidc_and_event_contracts():
         events = client.get('/api/events/contract').json()
         assert events['delivery'] == 'at-least-once'
         assert events['deduplication_key'] == 'event_id'
+
 
