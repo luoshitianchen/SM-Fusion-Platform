@@ -31,7 +31,7 @@ def test_version_endpoint_is_stable():
     with TestClient(app) as client:
         response = client.get("/api/version")
         assert response.status_code == 200
-        assert response.json()["version"] == "3.0.0"
+        assert response.json()["version"] == "3.1.0"
 
 
 def test_service_catalog_and_semantic_versions_are_valid():
@@ -58,3 +58,11 @@ def test_ops_metrics_endpoint_reports_runtime_counts():
         assert payload["service"] == "sm-fusion-platform"
         assert payload["requests_total"] >= 1
 
+
+
+
+def test_crypto_status():
+    with TestClient(app) as client:
+        response = client.get('/api/crypto/status')
+        assert response.status_code == 200
+        assert response.json()['algorithm'] == 'SM3/SM4'

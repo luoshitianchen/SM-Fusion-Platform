@@ -16,7 +16,7 @@ from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import FileResponse
 
 CATALOG_PATH = Path(os.getenv("FUSION_SERVICE_CATALOG", "config/services.json"))
-VERSION = "3.0.0"
+VERSION = "3.1.0"
 REQUEST_ID_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$")
 
 
@@ -161,3 +161,8 @@ def ops_metrics() -> dict[str, object]:
 @app.get("/api/version")
 def version() -> dict[str, str]:
     return {"name": app.title, "version": app.version, "channel": os.getenv("FUSION_RELEASE_CHANNEL", "stable")}
+
+
+@app.get("/api/crypto/status")
+def crypto_status() -> dict[str, object]:
+    return {"algorithm": "SM3/SM4", "sm3": "enabled", "sm4": "enabled", "services": 13}
