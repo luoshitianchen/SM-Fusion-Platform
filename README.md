@@ -236,3 +236,7 @@ docker compose -f docker-compose.data.yml up -d
 - 新增 `/api/oidc/config`，统一 OIDC、PKCE S256、JWKS 和企业角色 scope 配置。
 - 新增 `/api/events/contract`，定义 Event Bus 至少一次投递、事件幂等键、重试和死信目标。
 - 生产环境通过 `OIDC_ISSUER`、`OIDC_AUTHORIZATION_ENDPOINT`、`OIDC_TOKEN_ENDPOINT` 和 `OIDC_JWKS_URI` 注入真实 IAM 地址。
+
+
+## v3.8 业务域补齐
+新增 HR、CRM、Finance、Procurement、Legal Contract、Release Center 六个业务项目，服务矩阵扩展到 28 个。

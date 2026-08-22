@@ -19,7 +19,7 @@ def test_overview_returns_enterprise_service_metrics():
         response = client.get("/api/overview")
         assert response.status_code == 200
         payload = response.json()
-        assert payload["total"] == 22
+        assert payload["total"] == 28
         assert len(payload["services"]) == 22
         assert all("latency_ms" in service for service in payload["services"])
         assert payload["platform"]["name"] == "SM Fusion Platform"
@@ -31,7 +31,7 @@ def test_version_endpoint_is_stable():
     with TestClient(app) as client:
         response = client.get("/api/version")
         assert response.status_code == 200
-        assert response.json()["version"] == "3.7.0"
+        assert response.json()["version"] == "3.8.0"
 
 
 def test_service_catalog_and_semantic_versions_are_valid():
@@ -80,7 +80,7 @@ def test_prometheus_metrics():
 def test_integration_check_contract():
     with TestClient(app) as client:
         payload = client.get('/api/integration/check').json()
-        assert payload['total'] == 22
+        assert payload['total'] == 28
         assert payload['status'] in {'ok', 'degraded'}
         assert isinstance(payload['unavailable'], list)
 
@@ -89,7 +89,7 @@ def test_integration_check_contract():
 def test_gateway_and_audit_contracts():
     with TestClient(app) as client:
         routes = client.get('/api/gateway/routes').json()
-        assert routes['count'] == 22
+        assert routes['count'] == 28
         assert all('upstream' in item for item in routes['routes'])
         audit = client.get('/api/audit/contract').json()
         assert audit['integrity'] == 'SM3'
@@ -105,3 +105,4 @@ def test_oidc_and_event_contracts():
         events = client.get('/api/events/contract').json()
         assert events['delivery'] == 'at-least-once'
         assert events['deduplication_key'] == 'event_id'
+

@@ -458,5 +458,131 @@
     "health_path": "/health",
     "manifest_path": "/api/integration/manifest",
     "description": "数据交换与ETL"
+  },
+  {
+    "id": "hr",
+    "name": "SM HR",
+    "category": "人力资源",
+    "owner": "企业应用部",
+    "tier": "P1",
+    "slo": 99.5,
+    "environment": "production",
+    "service_version": "1.0.0",
+    "tenant_scope": "multi-tenant",
+    "compliance": [
+      "ISO27001",
+      "国密SM3/SM4"
+    ],
+    "contact": "hr@example.invalid",
+    "internal_url": "http://sm-hr:8500",
+    "public_url": "http://{host}:8500",
+    "health_path": "/health",
+    "manifest_path": "/api/integration/manifest",
+    "description": "SM HR"
+  },
+  {
+    "id": "crm",
+    "name": "SM CRM",
+    "category": "客户关系",
+    "owner": "企业应用部",
+    "tier": "P1",
+    "slo": 99.5,
+    "environment": "production",
+    "service_version": "1.0.0",
+    "tenant_scope": "multi-tenant",
+    "compliance": [
+      "ISO27001",
+      "国密SM3/SM4"
+    ],
+    "contact": "crm@example.invalid",
+    "internal_url": "http://sm-crm:8510",
+    "public_url": "http://{host}:8510",
+    "health_path": "/health",
+    "manifest_path": "/api/integration/manifest",
+    "description": "SM CRM"
+  },
+  {
+    "id": "finance",
+    "name": "SM Finance",
+    "category": "财务管理",
+    "owner": "企业应用部",
+    "tier": "P1",
+    "slo": 99.5,
+    "environment": "production",
+    "service_version": "1.0.0",
+    "tenant_scope": "multi-tenant",
+    "compliance": [
+      "ISO27001",
+      "国密SM3/SM4"
+    ],
+    "contact": "finance@example.invalid",
+    "internal_url": "http://sm-finance:8520",
+    "public_url": "http://{host}:8520",
+    "health_path": "/health",
+    "manifest_path": "/api/integration/manifest",
+    "description": "SM Finance"
+  },
+  {
+    "id": "procurement",
+    "name": "SM Procurement",
+    "category": "采购管理",
+    "owner": "企业应用部",
+    "tier": "P1",
+    "slo": 99.5,
+    "environment": "production",
+    "service_version": "1.0.0",
+    "tenant_scope": "multi-tenant",
+    "compliance": [
+      "ISO27001",
+      "国密SM3/SM4"
+    ],
+    "contact": "procurement@example.invalid",
+    "internal_url": "http://sm-procurement:8530",
+    "public_url": "http://{host}:8530",
+    "health_path": "/health",
+    "manifest_path": "/api/integration/manifest",
+    "description": "SM Procurement"
+  },
+  {
+    "id": "legal-contract",
+    "name": "SM Legal Contract",
+    "category": "合同法务",
+    "owner": "企业应用部",
+    "tier": "P1",
+    "slo": 99.5,
+    "environment": "production",
+    "service_version": "1.0.0",
+    "tenant_scope": "multi-tenant",
+    "compliance": [
+      "ISO27001",
+      "国密SM3/SM4"
+    ],
+    "contact": "legal-contract@example.invalid",
+    "internal_url": "http://sm-legal-contract:8540",
+    "public_url": "http://{host}:8540",
+    "health_path": "/health",
+    "manifest_path": "/api/integration/manifest",
+    "description": "SM Legal Contract"
+  },
+  {
+    "id": "release-center",
+    "name": "SM Release Center",
+    "category": "软件发布",
+    "owner": "企业应用部",
+    "tier": "P1",
+    "slo": 99.5,
+    "environment": "production",
+    "service_version": "1.0.0",
+    "tenant_scope": "multi-tenant",
+    "compliance": [
+      "ISO27001",
+      "国密SM3/SM4"
+    ],
+    "contact": "release-center@example.invalid",
+    "internal_url": "http://sm-release-center:8550",
+    "public_url": "http://{host}:8550",
+    "health_path": "/health",
+    "manifest_path": "/api/integration/manifest",
+    "description": "SM Release Center"
   }
 ]
