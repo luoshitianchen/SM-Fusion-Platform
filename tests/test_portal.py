@@ -19,8 +19,8 @@ def test_overview_returns_enterprise_service_metrics():
         response = client.get("/api/overview")
         assert response.status_code == 200
         payload = response.json()
-        assert payload["total"] == 13
-        assert len(payload["services"]) == 13
+        assert payload["total"] == 22
+        assert len(payload["services"]) == 22
         assert all("latency_ms" in service for service in payload["services"])
         assert payload["platform"]["name"] == "SM Fusion Platform"
         assert payload["business_status"] in {"operational", "degraded", "critical"}
@@ -31,7 +31,7 @@ def test_version_endpoint_is_stable():
     with TestClient(app) as client:
         response = client.get("/api/version")
         assert response.status_code == 200
-        assert response.json()["version"] == "3.5.0"
+        assert response.json()["version"] == "3.6.0"
 
 
 def test_service_catalog_and_semantic_versions_are_valid():

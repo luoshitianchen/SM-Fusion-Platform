@@ -269,5 +269,194 @@
     "health_path": "/health",
     "description": "企业 AI Agent 管理平台：Agent 编排、Prompt 管理、工具权限、调用审计与成本统计",
     "manifest_path": "/api/integration/manifest"
+  },
+  {
+    "id": "config-kms",
+    "name": "SM Config KMS",
+    "category": "基础设施",
+    "owner": "安全平台部",
+    "tier": "P0",
+    "slo": 99.95,
+    "environment": "production",
+    "service_version": "1.0.0",
+    "tenant_scope": "multi-tenant",
+    "compliance": [
+      "ISO27001",
+      "国密SM3/SM4"
+    ],
+    "contact": "config-kms@example.invalid",
+    "internal_url": "http://sm-config-kms:8400",
+    "public_url": "http://{host}:8400",
+    "health_path": "/health",
+    "manifest_path": "/api/integration/manifest",
+    "description": "统一配置与密钥中心"
+  },
+  {
+    "id": "event-bus",
+    "name": "SM Event Bus",
+    "category": "平台基础设施",
+    "owner": "平台工程部",
+    "tier": "P0",
+    "slo": 99.95,
+    "environment": "production",
+    "service_version": "1.0.0",
+    "tenant_scope": "multi-tenant",
+    "compliance": [
+      "ISO27001",
+      "国密SM3/SM4"
+    ],
+    "contact": "event-bus@example.invalid",
+    "internal_url": "http://sm-event-bus:8410",
+    "public_url": "http://{host}:8410",
+    "health_path": "/health",
+    "manifest_path": "/api/integration/manifest",
+    "description": "企业消息与事件总线"
+  },
+  {
+    "id": "object-storage",
+    "name": "SM Object Storage",
+    "category": "基础设施",
+    "owner": "数据平台部",
+    "tier": "P1",
+    "slo": 99.9,
+    "environment": "production",
+    "service_version": "1.0.0",
+    "tenant_scope": "multi-tenant",
+    "compliance": [
+      "ISO27001",
+      "国密SM3/SM4"
+    ],
+    "contact": "object-storage@example.invalid",
+    "internal_url": "http://sm-object-storage:8420",
+    "public_url": "http://{host}:8420",
+    "health_path": "/health",
+    "manifest_path": "/api/integration/manifest",
+    "description": "企业对象存储中心"
+  },
+  {
+    "id": "backup-dr",
+    "name": "SM Backup DR",
+    "category": "灾备中心",
+    "owner": "基础架构部",
+    "tier": "P0",
+    "slo": 99.9,
+    "environment": "production",
+    "service_version": "1.0.0",
+    "tenant_scope": "multi-tenant",
+    "compliance": [
+      "ISO27001",
+      "国密SM3/SM4"
+    ],
+    "contact": "backup-dr@example.invalid",
+    "internal_url": "http://sm-backup-dr:8430",
+    "public_url": "http://{host}:8430",
+    "health_path": "/health",
+    "manifest_path": "/api/integration/manifest",
+    "description": "备份与灾备中心"
+  },
+  {
+    "id": "api-developer-portal",
+    "name": "SM API Developer Portal",
+    "category": "开发者平台",
+    "owner": "平台工程部",
+    "tier": "P1",
+    "slo": 99.5,
+    "environment": "production",
+    "service_version": "1.0.0",
+    "tenant_scope": "multi-tenant",
+    "compliance": [
+      "ISO27001",
+      "国密SM3/SM4"
+    ],
+    "contact": "api-developer-portal@example.invalid",
+    "internal_url": "http://sm-api-developer-portal:8440",
+    "public_url": "http://{host}:8440",
+    "health_path": "/health",
+    "manifest_path": "/api/integration/manifest",
+    "description": "API开发者门户"
+  },
+  {
+    "id": "mdm",
+    "name": "SM MDM",
+    "category": "主数据",
+    "owner": "数据平台部",
+    "tier": "P1",
+    "slo": 99.5,
+    "environment": "production",
+    "service_version": "1.0.0",
+    "tenant_scope": "multi-tenant",
+    "compliance": [
+      "ISO27001",
+      "国密SM3/SM4"
+    ],
+    "contact": "mdm@example.invalid",
+    "internal_url": "http://sm-mdm:8450",
+    "public_url": "http://{host}:8450",
+    "health_path": "/health",
+    "manifest_path": "/api/integration/manifest",
+    "description": "主数据管理"
+  },
+  {
+    "id": "soc",
+    "name": "SM SOC",
+    "category": "安全运营",
+    "owner": "安全合规部",
+    "tier": "P0",
+    "slo": 99.95,
+    "environment": "production",
+    "service_version": "1.0.0",
+    "tenant_scope": "multi-tenant",
+    "compliance": [
+      "ISO27001",
+      "国密SM3/SM4"
+    ],
+    "contact": "soc@example.invalid",
+    "internal_url": "http://sm-soc:8460",
+    "public_url": "http://{host}:8460",
+    "health_path": "/health",
+    "manifest_path": "/api/integration/manifest",
+    "description": "安全运营中心"
+  },
+  {
+    "id": "notification-center",
+    "name": "SM Notification Center",
+    "category": "企业协同",
+    "owner": "IT服务部",
+    "tier": "P1",
+    "slo": 99.5,
+    "environment": "production",
+    "service_version": "1.0.0",
+    "tenant_scope": "multi-tenant",
+    "compliance": [
+      "ISO27001",
+      "国密SM3/SM4"
+    ],
+    "contact": "notification-center@example.invalid",
+    "internal_url": "http://sm-notification-center:8470",
+    "public_url": "http://{host}:8470",
+    "health_path": "/health",
+    "manifest_path": "/api/integration/manifest",
+    "description": "企业通知中心"
+  },
+  {
+    "id": "data-exchange",
+    "name": "SM Data Exchange",
+    "category": "数据集成",
+    "owner": "数据平台部",
+    "tier": "P1",
+    "slo": 99.5,
+    "environment": "production",
+    "service_version": "1.0.0",
+    "tenant_scope": "multi-tenant",
+    "compliance": [
+      "ISO27001",
+      "国密SM3/SM4"
+    ],
+    "contact": "data-exchange@example.invalid",
+    "internal_url": "http://sm-data-exchange:8480",
+    "public_url": "http://{host}:8480",
+    "health_path": "/health",
+    "manifest_path": "/api/integration/manifest",
+    "description": "数据交换与ETL"
   }
 ]
