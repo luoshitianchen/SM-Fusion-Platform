@@ -219,3 +219,8 @@ docker compose -f docker-compose.data.yml up -d
 ## v3.6 企业平台矩阵扩展
 - 新增配置密钥、事件总线、对象存储、灾备、开发者门户、MDM、SOC、通知中心和数据交换 9 个项目。
 - 服务目录扩展到 22 个项目，统一支持健康探测、治理元数据和国密状态。
+
+
+## v3.7 链路推进
+- 新增 `/api/integration/check`，统一输出 22 个项目的健康联动结果。
+- 可用于发布前检查、运维巡检和 Kubernetes 就绪门禁。

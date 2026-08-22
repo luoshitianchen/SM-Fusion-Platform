@@ -16,7 +16,7 @@ from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import FileResponse
 
 CATALOG_PATH = Path(os.getenv("FUSION_SERVICE_CATALOG", "config/services.json"))
-VERSION = "3.6.0"
+VERSION = "3.7.0"
 REQUEST_ID_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$")
 
 
@@ -177,3 +177,10 @@ def prometheus_metrics() -> Response:
         f"sm_fusion_errors_total {int(snapshot['errors_total'])}\n"
     )
     return Response(content=body, media_type="text/plain; version=0.0.4")
+
+
+@app.get("/api/integration/check")
+async def integration_check(request: Request) -> dict[str, object]:
+    services = await probe_all()
+    resolve_public_urls(services, request)
+    return {"status": "ok" if all(item["status"] == "healthy" for item in services) else "degraded", "total": len(services), "healthy": sum(item["status"] == "healthy" for item in services), "unavailable": [item["id"] for item in services if item["status"] != "healthy"]}
