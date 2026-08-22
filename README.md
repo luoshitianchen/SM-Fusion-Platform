@@ -240,3 +240,10 @@ docker compose -f docker-compose.data.yml up -d
 
 ## v3.8 业务域补齐
 新增 HR、CRM、Finance、Procurement、Legal Contract、Release Center 六个业务项目，服务矩阵扩展到 28 个。
+
+
+## v4.0 企业指挥中心 UI 重构
+- 全面重构融合门户为企业级 Command Center。
+- 新增总览驾驶舱、服务矩阵、治理合规、运行指标四个工作区。
+- 增加服务搜索、状态筛选、关键服务卡片、治理表格、Prometheus 和链路检查入口。
+- 响应式适配桌面、平板和移动端。

@@ -31,7 +31,7 @@ def test_version_endpoint_is_stable():
     with TestClient(app) as client:
         response = client.get("/api/version")
         assert response.status_code == 200
-        assert response.json()["version"] == "3.8.0"
+        assert response.json()["version"] == "4.0.0"
 
 
 def test_service_catalog_and_semantic_versions_are_valid():
