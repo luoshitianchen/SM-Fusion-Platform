@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SM Enterprise Integration Manifest",
+  "type": "object",
+  "required": ["service", "name", "version", "dependencies", "events", "health_path", "metrics_path", "overview_path"],
+  "properties": {
+    "service": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+    "name": {"type": "string", "minLength": 2},
+    "version": {"type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$"},
+    "dependencies": {"type": "array", "items": {"type": "string"}},
+    "events": {"type": "array", "items": {"type": "string"}},
+    "health_path": {"type": "string", "pattern": "^/"},
+    "metrics_path": {"type": "string", "pattern": "^/"},
+    "overview_path": {"type": "string", "pattern": "^/"}
+  },
+  "additionalProperties": false
+}

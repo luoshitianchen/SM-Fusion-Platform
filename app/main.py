@@ -16,7 +16,7 @@ from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import FileResponse
 
 CATALOG_PATH = Path(os.getenv("FUSION_SERVICE_CATALOG", "config/services.json"))
-VERSION = "3.2.0"
+VERSION = "3.3.0"
 REQUEST_ID_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$")
 
 

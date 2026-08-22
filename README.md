@@ -157,3 +157,9 @@ docker compose up --build -d
 - 融合门户升级到 `3.2.0`。
 - ERP 与 Knowledge Bot 同步纳入全量国密状态检查。
 - 服务目录核心项目版本同步到 `2.4.0`，新增项目保持 `2.0.0` 国密版本。
+
+
+## v3.3 平台重建升级
+- 新增 `contracts/integration.schema.json`，统一校验所有项目链路契约。
+- 新增 `deploy/k8s/fusion-platform.yaml`，提供非 root、只读文件系统、seccomp、健康探针和副本数配置。
+- 所有子项目新增 `/api/security/baseline`，融合平台可纳入统一安全基线检查。
