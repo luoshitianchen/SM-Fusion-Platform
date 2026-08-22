@@ -184,3 +184,13 @@ async def integration_check(request: Request) -> dict[str, object]:
     services = await probe_all()
     resolve_public_urls(services, request)
     return {"status": "ok" if all(item["status"] == "healthy" for item in services) else "degraded", "total": len(services), "healthy": sum(item["status"] == "healthy" for item in services), "unavailable": [item["id"] for item in services if item["status"] != "healthy"]}
+
+
+@app.get("/api/gateway/routes")
+def gateway_routes() -> dict[str, object]:
+    services = load_services()
+    return {"routes": [{"id": item["id"], "upstream": item["internal_url"], "health": item.get("health_path", "/health"), "public": item["public_url"], "auth": "iam" if item["id"] not in {"fusion", "health"} else "portal"} for item in services], "count": len(services)}
+
+@app.get("/api/audit/contract")
+def audit_contract() -> dict[str, object]:
+    return {"event_schema": "v1", "required": ["event_id", "service", "action", "actor", "timestamp", "request_id"], "transport": "event-bus", "integrity": "SM3", "retention_days": 365}

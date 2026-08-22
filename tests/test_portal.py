@@ -83,3 +83,14 @@ def test_integration_check_contract():
         assert payload['total'] == 22
         assert payload['status'] in {'ok', 'degraded'}
         assert isinstance(payload['unavailable'], list)
+
+
+
+def test_gateway_and_audit_contracts():
+    with TestClient(app) as client:
+        routes = client.get('/api/gateway/routes').json()
+        assert routes['count'] == 22
+        assert all('upstream' in item for item in routes['routes'])
+        audit = client.get('/api/audit/contract').json()
+        assert audit['integrity'] == 'SM3'
+        assert 'request_id' in audit['required']

@@ -224,3 +224,9 @@ docker compose -f docker-compose.data.yml up -d
 ## v3.7 链路推进
 - 新增 `/api/integration/check`，统一输出 22 个项目的健康联动结果。
 - 可用于发布前检查、运维巡检和 Kubernetes 就绪门禁。
+
+
+## v3.8 网关与审计契约
+- 新增 `/api/gateway/routes`，统一输出 22 个服务的上游、健康和访问路由。
+- 新增 `/api/audit/contract`，统一事件 ID、服务、动作、操作者、时间戳和请求 ID 字段。
+- 审计完整性采用 SM3，传输目标为 Event Bus，默认留存 365 天。
