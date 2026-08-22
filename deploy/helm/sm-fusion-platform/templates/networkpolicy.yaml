@@ -1,0 +1,13 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "sm-fusion-platform.fullname" . }}
+spec:
+  podSelector: {matchLabels: {app.kubernetes.io/name: sm-fusion-platform}}
+  policyTypes: [Ingress, Egress]
+  ingress:
+    - from: [{namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: sm-enterprise}}}]
+      ports: [{protocol: TCP, port: 8200}]
+  egress:
+    - to: [{namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: sm-enterprise}}}]
+      ports: [{protocol: TCP, port: 8100}]

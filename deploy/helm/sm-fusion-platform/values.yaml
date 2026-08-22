@@ -1,0 +1,15 @@
+replicaCount: 2
+image:
+  repository: ghcr.io/luoshitianchen/sm-fusion-platform
+  tag: "3.3.0"
+  pullPolicy: IfNotPresent
+service:
+  type: ClusterIP
+  port: 8200
+resources:
+  requests: {cpu: 100m, memory: 128Mi}
+  limits: {cpu: 500m, memory: 512Mi}
+securityContext:
+  runAsNonRoot: true
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false

@@ -163,3 +163,25 @@ docker compose up --build -d
 - 新增 `contracts/integration.schema.json`，统一校验所有项目链路契约。
 - 新增 `deploy/k8s/fusion-platform.yaml`，提供非 root、只读文件系统、seccomp、健康探针和副本数配置。
 - 所有子项目新增 `/api/security/baseline`，融合平台可纳入统一安全基线检查。
+
+## v3.4 生产部署完善
+新增 Helm Chart：
+
+```text
+deploy/helm/sm-fusion-platform
+```
+
+包含：
+- Deployment 多副本
+- Service
+- HPA 自动扩缩容
+- NetworkPolicy 东西向访问控制
+- 非 root、只读根文件系统、seccomp、能力剥离
+- 内存 tmpfs
+- 健康探针与资源 requests/limits
+
+安装示例：
+
+```powershell
+helm upgrade --install sm-fusion ./deploy/helm/sm-fusion-platform -n sm-enterprise --create-namespace
+```
