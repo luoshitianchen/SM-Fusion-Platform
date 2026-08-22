@@ -230,3 +230,9 @@ docker compose -f docker-compose.data.yml up -d
 - 新增 `/api/gateway/routes`，统一输出 22 个服务的上游、健康和访问路由。
 - 新增 `/api/audit/contract`，统一事件 ID、服务、动作、操作者、时间戳和请求 ID 字段。
 - 审计完整性采用 SM3，传输目标为 Event Bus，默认留存 365 天。
+
+
+## v3.9 身份与事件契约
+- 新增 `/api/oidc/config`，统一 OIDC、PKCE S256、JWKS 和企业角色 scope 配置。
+- 新增 `/api/events/contract`，定义 Event Bus 至少一次投递、事件幂等键、重试和死信目标。
+- 生产环境通过 `OIDC_ISSUER`、`OIDC_AUTHORIZATION_ENDPOINT`、`OIDC_TOKEN_ENDPOINT` 和 `OIDC_JWKS_URI` 注入真实 IAM 地址。

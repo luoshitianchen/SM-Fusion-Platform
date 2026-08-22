@@ -194,3 +194,19 @@ def gateway_routes() -> dict[str, object]:
 @app.get("/api/audit/contract")
 def audit_contract() -> dict[str, object]:
     return {"event_schema": "v1", "required": ["event_id", "service", "action", "actor", "timestamp", "request_id"], "transport": "event-bus", "integrity": "SM3", "retention_days": 365}
+
+
+@app.get("/api/oidc/config")
+def oidc_config() -> dict[str, object]:
+    return {
+        "issuer": os.getenv("OIDC_ISSUER", "https://iam.example.invalid"),
+        "authorization_endpoint": os.getenv("OIDC_AUTHORIZATION_ENDPOINT", "https://iam.example.invalid/authorize"),
+        "token_endpoint": os.getenv("OIDC_TOKEN_ENDPOINT", "https://iam.example.invalid/token"),
+        "jwks_uri": os.getenv("OIDC_JWKS_URI", "https://iam.example.invalid/.well-known/jwks.json"),
+        "scopes": ["openid", "profile", "email", "roles"],
+        "pkce": "S256",
+    }
+
+@app.get("/api/events/contract")
+def event_contract() -> dict[str, object]:
+    return {"version": "1.0", "transport": "event-bus", "delivery": "at-least-once", "deduplication_key": "event_id", "retry": {"max_attempts": 5, "backoff_seconds": [1, 5, 30, 120, 600]}, "dead_letter": "sm-audit-log-center"}

@@ -94,3 +94,14 @@ def test_gateway_and_audit_contracts():
         audit = client.get('/api/audit/contract').json()
         assert audit['integrity'] == 'SM3'
         assert 'request_id' in audit['required']
+
+
+
+def test_oidc_and_event_contracts():
+    with TestClient(app) as client:
+        oidc = client.get('/api/oidc/config').json()
+        assert oidc['pkce'] == 'S256'
+        assert 'openid' in oidc['scopes']
+        events = client.get('/api/events/contract').json()
+        assert events['delivery'] == 'at-least-once'
+        assert events['deduplication_key'] == 'event_id'
