@@ -7,7 +7,7 @@
     "tier": "P1",
     "slo": 99.9,
     "environment": "production",
-    "service_version": "2.3.0",
+    "service_version": "2.4.0",
     "tenant_scope": "multi-tenant",
     "compliance": [
       "ISO27001",
@@ -27,7 +27,7 @@
     "tier": "P1",
     "slo": 99.9,
     "environment": "production",
-    "service_version": "2.3.0",
+    "service_version": "2.4.0",
     "tenant_scope": "multi-tenant",
     "compliance": [
       "ISO27001",
@@ -47,7 +47,7 @@
     "tier": "P2",
     "slo": 99.5,
     "environment": "production",
-    "service_version": "2.3.0",
+    "service_version": "2.4.0",
     "tenant_scope": "department-isolated",
     "compliance": [
       "ISO27001",
