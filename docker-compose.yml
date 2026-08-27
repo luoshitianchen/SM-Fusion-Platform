@@ -41,6 +41,8 @@ services:
     ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8300:8300"]
     environment:
       SM_ALLOWED_HOSTS: sm-iam,localhost,127.0.0.1
+      SM_ENV: production
+      SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
     restart: unless-stopped
     read_only: true
     tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
@@ -52,6 +54,8 @@ services:
     ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8310:8310"]
     environment:
       SM_ALLOWED_HOSTS: sm-api-gateway,localhost,127.0.0.1
+      SM_ENV: production
+      SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
     restart: unless-stopped
     read_only: true
     tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
@@ -63,6 +67,8 @@ services:
     ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8320:8320"]
     environment:
       SM_ALLOWED_HOSTS: sm-audit-log-center,localhost,127.0.0.1
+      SM_ENV: production
+      SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
     restart: unless-stopped
     read_only: true
     tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
@@ -74,6 +80,8 @@ services:
     ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8330:8330"]
     environment:
       SM_ALLOWED_HOSTS: sm-observability,localhost,127.0.0.1
+      SM_ENV: production
+      SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
     restart: unless-stopped
     read_only: true
     tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
@@ -85,6 +93,8 @@ services:
     ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8340:8340"]
     environment:
       SM_ALLOWED_HOSTS: sm-devsecops,localhost,127.0.0.1
+      SM_ENV: production
+      SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
     restart: unless-stopped
     read_only: true
     tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
@@ -96,6 +106,8 @@ services:
     ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8350:8350"]
     environment:
       SM_ALLOWED_HOSTS: sm-workflow-approval,localhost,127.0.0.1
+      SM_ENV: production
+      SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
     restart: unless-stopped
     read_only: true
     tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
@@ -107,6 +119,8 @@ services:
     ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8360:8360"]
     environment:
       SM_ALLOWED_HOSTS: sm-data-governance,localhost,127.0.0.1
+      SM_ENV: production
+      SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
     restart: unless-stopped
     read_only: true
     tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
@@ -118,6 +132,8 @@ services:
     ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8370:8370"]
     environment:
       SM_ALLOWED_HOSTS: sm-service-desk,localhost,127.0.0.1
+      SM_ENV: production
+      SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
     restart: unless-stopped
     read_only: true
     tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
@@ -129,6 +145,8 @@ services:
     ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8380:8380"]
     environment:
       SM_ALLOWED_HOSTS: sm-cmdb,localhost,127.0.0.1
+      SM_ENV: production
+      SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
     restart: unless-stopped
     read_only: true
     tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
@@ -140,6 +158,8 @@ services:
     ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8390:8390"]
     environment:
       SM_ALLOWED_HOSTS: sm-agentops,localhost,127.0.0.1
+      SM_ENV: production
+      SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
     restart: unless-stopped
     read_only: true
     tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
