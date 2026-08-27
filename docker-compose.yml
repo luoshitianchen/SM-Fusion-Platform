@@ -43,6 +43,12 @@ services:
       SM_ALLOWED_HOSTS: sm-iam,localhost,127.0.0.1
       SM_ENV: production
       SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
+      SM_JWT_SECRET: ${SM_JWT_SECRET:?Set SM_JWT_SECRET in .env}
+      SM_DATABASE_PATH: /app/data/iam.db
+      SM_AUDIT_CENTER_URL: http://sm-audit-log-center:8320
+      SM_IAM_BOOTSTRAP_USER: ${SM_IAM_BOOTSTRAP_USER:-admin}
+      SM_IAM_BOOTSTRAP_PASSWORD: ${SM_IAM_BOOTSTRAP_PASSWORD:?Set SM_IAM_BOOTSTRAP_PASSWORD in .env}
+    volumes: ["iam-data:/app/data"]
     restart: unless-stopped
     read_only: true
     tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
@@ -56,6 +62,10 @@ services:
       SM_ALLOWED_HOSTS: sm-api-gateway,localhost,127.0.0.1
       SM_ENV: production
       SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
+      SM_JWT_SECRET: ${SM_JWT_SECRET:?Set SM_JWT_SECRET in .env}
+      SM_DATABASE_PATH: /app/data/api-gateway.db
+      SM_AUDIT_CENTER_URL: http://sm-audit-log-center:8320
+    volumes: ["api-gateway-data:/app/data"]
     restart: unless-stopped
     read_only: true
     tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
@@ -69,6 +79,9 @@ services:
       SM_ALLOWED_HOSTS: sm-audit-log-center,localhost,127.0.0.1
       SM_ENV: production
       SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
+      SM_JWT_SECRET: ${SM_JWT_SECRET:?Set SM_JWT_SECRET in .env}
+      SM_DATABASE_PATH: /app/data/audit-log-center.db
+    volumes: ["audit-log-center-data:/app/data"]
     restart: unless-stopped
     read_only: true
     tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
@@ -82,6 +95,10 @@ services:
       SM_ALLOWED_HOSTS: sm-observability,localhost,127.0.0.1
       SM_ENV: production
       SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
+      SM_JWT_SECRET: ${SM_JWT_SECRET:?Set SM_JWT_SECRET in .env}
+      SM_DATABASE_PATH: /app/data/observability.db
+      SM_AUDIT_CENTER_URL: http://sm-audit-log-center:8320
+    volumes: ["observability-data:/app/data"]
     restart: unless-stopped
     read_only: true
     tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
@@ -95,6 +112,10 @@ services:
       SM_ALLOWED_HOSTS: sm-devsecops,localhost,127.0.0.1
       SM_ENV: production
       SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
+      SM_JWT_SECRET: ${SM_JWT_SECRET:?Set SM_JWT_SECRET in .env}
+      SM_DATABASE_PATH: /app/data/devsecops.db
+      SM_AUDIT_CENTER_URL: http://sm-audit-log-center:8320
+    volumes: ["devsecops-data:/app/data"]
     restart: unless-stopped
     read_only: true
     tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
@@ -108,6 +129,10 @@ services:
       SM_ALLOWED_HOSTS: sm-workflow-approval,localhost,127.0.0.1
       SM_ENV: production
       SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
+      SM_JWT_SECRET: ${SM_JWT_SECRET:?Set SM_JWT_SECRET in .env}
+      SM_DATABASE_PATH: /app/data/workflow-approval.db
+      SM_AUDIT_CENTER_URL: http://sm-audit-log-center:8320
+    volumes: ["workflow-approval-data:/app/data"]
     restart: unless-stopped
     read_only: true
     tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
@@ -121,6 +146,10 @@ services:
       SM_ALLOWED_HOSTS: sm-data-governance,localhost,127.0.0.1
       SM_ENV: production
       SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
+      SM_JWT_SECRET: ${SM_JWT_SECRET:?Set SM_JWT_SECRET in .env}
+      SM_DATABASE_PATH: /app/data/data-governance.db
+      SM_AUDIT_CENTER_URL: http://sm-audit-log-center:8320
+    volumes: ["data-governance-data:/app/data"]
     restart: unless-stopped
     read_only: true
     tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
@@ -134,6 +163,10 @@ services:
       SM_ALLOWED_HOSTS: sm-service-desk,localhost,127.0.0.1
       SM_ENV: production
       SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
+      SM_JWT_SECRET: ${SM_JWT_SECRET:?Set SM_JWT_SECRET in .env}
+      SM_DATABASE_PATH: /app/data/service-desk.db
+      SM_AUDIT_CENTER_URL: http://sm-audit-log-center:8320
+    volumes: ["service-desk-data:/app/data"]
     restart: unless-stopped
     read_only: true
     tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
@@ -147,6 +180,10 @@ services:
       SM_ALLOWED_HOSTS: sm-cmdb,localhost,127.0.0.1
       SM_ENV: production
       SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
+      SM_JWT_SECRET: ${SM_JWT_SECRET:?Set SM_JWT_SECRET in .env}
+      SM_DATABASE_PATH: /app/data/cmdb.db
+      SM_AUDIT_CENTER_URL: http://sm-audit-log-center:8320
+    volumes: ["cmdb-data:/app/data"]
     restart: unless-stopped
     read_only: true
     tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
@@ -160,6 +197,265 @@ services:
       SM_ALLOWED_HOSTS: sm-agentops,localhost,127.0.0.1
       SM_ENV: production
       SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
+      SM_JWT_SECRET: ${SM_JWT_SECRET:?Set SM_JWT_SECRET in .env}
+      SM_DATABASE_PATH: /app/data/agentops.db
+      SM_AUDIT_CENTER_URL: http://sm-audit-log-center:8320
+    volumes: ["agentops-data:/app/data"]
+    restart: unless-stopped
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+    pids_limit: 100
+  sm-config-kms:
+    build: https://github.com/luoshitianchen/SM-Config-KMS.git#main
+    ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8400:8400"]
+    environment:
+      SM_ALLOWED_HOSTS: sm-config-kms,localhost,127.0.0.1
+      SM_ENV: production
+      SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
+      SM_JWT_SECRET: ${SM_JWT_SECRET:?Set SM_JWT_SECRET in .env}
+      SM_DATABASE_PATH: /app/data/config-kms.db
+      SM_AUDIT_CENTER_URL: http://sm-audit-log-center:8320
+    volumes: ["config-kms-data:/app/data"]
+    restart: unless-stopped
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+    pids_limit: 100
+  sm-event-bus:
+    build: https://github.com/luoshitianchen/SM-Event-Bus.git#main
+    ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8410:8410"]
+    environment:
+      SM_ALLOWED_HOSTS: sm-event-bus,localhost,127.0.0.1
+      SM_ENV: production
+      SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
+      SM_JWT_SECRET: ${SM_JWT_SECRET:?Set SM_JWT_SECRET in .env}
+      SM_DATABASE_PATH: /app/data/event-bus.db
+      SM_AUDIT_CENTER_URL: http://sm-audit-log-center:8320
+    volumes: ["event-bus-data:/app/data"]
+    restart: unless-stopped
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+    pids_limit: 100
+  sm-object-storage:
+    build: https://github.com/luoshitianchen/SM-Object-Storage.git#main
+    ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8420:8420"]
+    environment:
+      SM_ALLOWED_HOSTS: sm-object-storage,localhost,127.0.0.1
+      SM_ENV: production
+      SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
+      SM_JWT_SECRET: ${SM_JWT_SECRET:?Set SM_JWT_SECRET in .env}
+      SM_DATABASE_PATH: /app/data/object-storage.db
+      SM_AUDIT_CENTER_URL: http://sm-audit-log-center:8320
+    volumes: ["object-storage-data:/app/data"]
+    restart: unless-stopped
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+    pids_limit: 100
+  sm-backup-dr:
+    build: https://github.com/luoshitianchen/SM-Backup-DR.git#main
+    ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8430:8430"]
+    environment:
+      SM_ALLOWED_HOSTS: sm-backup-dr,localhost,127.0.0.1
+      SM_ENV: production
+      SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
+      SM_JWT_SECRET: ${SM_JWT_SECRET:?Set SM_JWT_SECRET in .env}
+      SM_DATABASE_PATH: /app/data/backup-dr.db
+      SM_AUDIT_CENTER_URL: http://sm-audit-log-center:8320
+    volumes: ["backup-dr-data:/app/data"]
+    restart: unless-stopped
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+    pids_limit: 100
+  sm-api-developer-portal:
+    build: https://github.com/luoshitianchen/SM-API-Developer-Portal.git#main
+    ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8440:8440"]
+    environment:
+      SM_ALLOWED_HOSTS: sm-api-developer-portal,localhost,127.0.0.1
+      SM_ENV: production
+      SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
+      SM_JWT_SECRET: ${SM_JWT_SECRET:?Set SM_JWT_SECRET in .env}
+      SM_DATABASE_PATH: /app/data/api-developer-portal.db
+      SM_AUDIT_CENTER_URL: http://sm-audit-log-center:8320
+    volumes: ["api-developer-portal-data:/app/data"]
+    restart: unless-stopped
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+    pids_limit: 100
+  sm-mdm:
+    build: https://github.com/luoshitianchen/SM-MDM.git#main
+    ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8450:8450"]
+    environment:
+      SM_ALLOWED_HOSTS: sm-mdm,localhost,127.0.0.1
+      SM_ENV: production
+      SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
+      SM_JWT_SECRET: ${SM_JWT_SECRET:?Set SM_JWT_SECRET in .env}
+      SM_DATABASE_PATH: /app/data/mdm.db
+      SM_AUDIT_CENTER_URL: http://sm-audit-log-center:8320
+    volumes: ["mdm-data:/app/data"]
+    restart: unless-stopped
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+    pids_limit: 100
+  sm-soc:
+    build: https://github.com/luoshitianchen/SM-SOC.git#main
+    ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8460:8460"]
+    environment:
+      SM_ALLOWED_HOSTS: sm-soc,localhost,127.0.0.1
+      SM_ENV: production
+      SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
+      SM_JWT_SECRET: ${SM_JWT_SECRET:?Set SM_JWT_SECRET in .env}
+      SM_DATABASE_PATH: /app/data/soc.db
+      SM_AUDIT_CENTER_URL: http://sm-audit-log-center:8320
+    volumes: ["soc-data:/app/data"]
+    restart: unless-stopped
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+    pids_limit: 100
+  sm-notification-center:
+    build: https://github.com/luoshitianchen/SM-Notification-Center.git#main
+    ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8470:8470"]
+    environment:
+      SM_ALLOWED_HOSTS: sm-notification-center,localhost,127.0.0.1
+      SM_ENV: production
+      SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
+      SM_JWT_SECRET: ${SM_JWT_SECRET:?Set SM_JWT_SECRET in .env}
+      SM_DATABASE_PATH: /app/data/notification-center.db
+      SM_AUDIT_CENTER_URL: http://sm-audit-log-center:8320
+    volumes: ["notification-center-data:/app/data"]
+    restart: unless-stopped
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+    pids_limit: 100
+  sm-data-exchange:
+    build: https://github.com/luoshitianchen/SM-Data-Exchange.git#main
+    ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8480:8480"]
+    environment:
+      SM_ALLOWED_HOSTS: sm-data-exchange,localhost,127.0.0.1
+      SM_ENV: production
+      SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
+      SM_JWT_SECRET: ${SM_JWT_SECRET:?Set SM_JWT_SECRET in .env}
+      SM_DATABASE_PATH: /app/data/data-exchange.db
+      SM_AUDIT_CENTER_URL: http://sm-audit-log-center:8320
+    volumes: ["data-exchange-data:/app/data"]
+    restart: unless-stopped
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+    pids_limit: 100
+  sm-hr:
+    build: https://github.com/luoshitianchen/SM-HR.git#main
+    ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8500:8500"]
+    environment:
+      SM_ALLOWED_HOSTS: sm-hr,localhost,127.0.0.1
+      SM_ENV: production
+      SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
+      SM_JWT_SECRET: ${SM_JWT_SECRET:?Set SM_JWT_SECRET in .env}
+      SM_DATABASE_PATH: /app/data/hr.db
+      SM_AUDIT_CENTER_URL: http://sm-audit-log-center:8320
+    volumes: ["hr-data:/app/data"]
+    restart: unless-stopped
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+    pids_limit: 100
+  sm-crm:
+    build: https://github.com/luoshitianchen/SM-CRM.git#main
+    ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8510:8510"]
+    environment:
+      SM_ALLOWED_HOSTS: sm-crm,localhost,127.0.0.1
+      SM_ENV: production
+      SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
+      SM_JWT_SECRET: ${SM_JWT_SECRET:?Set SM_JWT_SECRET in .env}
+      SM_DATABASE_PATH: /app/data/crm.db
+      SM_AUDIT_CENTER_URL: http://sm-audit-log-center:8320
+    volumes: ["crm-data:/app/data"]
+    restart: unless-stopped
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+    pids_limit: 100
+  sm-finance:
+    build: https://github.com/luoshitianchen/SM-Finance.git#main
+    ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8520:8520"]
+    environment:
+      SM_ALLOWED_HOSTS: sm-finance,localhost,127.0.0.1
+      SM_ENV: production
+      SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
+      SM_JWT_SECRET: ${SM_JWT_SECRET:?Set SM_JWT_SECRET in .env}
+      SM_DATABASE_PATH: /app/data/finance.db
+      SM_AUDIT_CENTER_URL: http://sm-audit-log-center:8320
+    volumes: ["finance-data:/app/data"]
+    restart: unless-stopped
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+    pids_limit: 100
+  sm-procurement:
+    build: https://github.com/luoshitianchen/SM-Procurement.git#main
+    ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8530:8530"]
+    environment:
+      SM_ALLOWED_HOSTS: sm-procurement,localhost,127.0.0.1
+      SM_ENV: production
+      SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
+      SM_JWT_SECRET: ${SM_JWT_SECRET:?Set SM_JWT_SECRET in .env}
+      SM_DATABASE_PATH: /app/data/procurement.db
+      SM_AUDIT_CENTER_URL: http://sm-audit-log-center:8320
+    volumes: ["procurement-data:/app/data"]
+    restart: unless-stopped
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+    pids_limit: 100
+  sm-legal-contract:
+    build: https://github.com/luoshitianchen/SM-Legal-Contract.git#main
+    ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8540:8540"]
+    environment:
+      SM_ALLOWED_HOSTS: sm-legal-contract,localhost,127.0.0.1
+      SM_ENV: production
+      SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
+      SM_JWT_SECRET: ${SM_JWT_SECRET:?Set SM_JWT_SECRET in .env}
+      SM_DATABASE_PATH: /app/data/legal-contract.db
+      SM_AUDIT_CENTER_URL: http://sm-audit-log-center:8320
+    volumes: ["legal-contract-data:/app/data"]
+    restart: unless-stopped
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+    pids_limit: 100
+  sm-release-center:
+    build: https://github.com/luoshitianchen/SM-Release-Center.git#main
+    ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8550:8550"]
+    environment:
+      SM_ALLOWED_HOSTS: sm-release-center,localhost,127.0.0.1
+      SM_ENV: production
+      SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
+      SM_JWT_SECRET: ${SM_JWT_SECRET:?Set SM_JWT_SECRET in .env}
+      SM_DATABASE_PATH: /app/data/release-center.db
+      SM_AUDIT_CENTER_URL: http://sm-audit-log-center:8320
+    volumes: ["release-center-data:/app/data"]
     restart: unless-stopped
     read_only: true
     tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
@@ -184,6 +480,21 @@ services:
       - sm-service-desk
       - sm-cmdb
       - sm-agentops
+      - sm-config-kms
+      - sm-event-bus
+      - sm-object-storage
+      - sm-backup-dr
+      - sm-api-developer-portal
+      - sm-mdm
+      - sm-soc
+      - sm-notification-center
+      - sm-data-exchange
+      - sm-hr
+      - sm-crm
+      - sm-finance
+      - sm-procurement
+      - sm-legal-contract
+      - sm-release-center
     restart: unless-stopped
     read_only: true
     tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
@@ -193,3 +504,28 @@ services:
 volumes:
   erp-data:
   kb-data:
+  iam-data:
+  api-gateway-data:
+  audit-log-center-data:
+  observability-data:
+  devsecops-data:
+  workflow-approval-data:
+  data-governance-data:
+  service-desk-data:
+  cmdb-data:
+  agentops-data:
+  config-kms-data:
+  event-bus-data:
+  object-storage-data:
+  backup-dr-data:
+  api-developer-portal-data:
+  mdm-data:
+  soc-data:
+  notification-center-data:
+  data-exchange-data:
+  hr-data:
+  crm-data:
+  finance-data:
+  procurement-data:
+  legal-contract-data:
+  release-center-data:
