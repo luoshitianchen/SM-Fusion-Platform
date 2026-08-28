@@ -9,6 +9,9 @@ services:
       ERP_SM4_KEY_HEX: ${ERP_SM4_KEY_HEX:?Set ERP_SM4_KEY_HEX in .env}
       ERP_KNOWLEDGE_BOT_INTEGRATION_KEY: ${FUSION_INTEGRATION_KEY:?Set FUSION_INTEGRATION_KEY in .env}
       ERP_ALLOWED_HOSTS: sm-erp,localhost,127.0.0.1
+      SM_JWT_SECRET: ${SM_JWT_SECRET:?Set SM_JWT_SECRET in .env}
+      SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
+      SM_AUDIT_CENTER_URL: http://sm-audit-log-center:8320
     volumes: ["erp-data:/app/data"]
     restart: unless-stopped
     read_only: true
@@ -28,6 +31,9 @@ services:
       ERP_VERIFY_TLS: "false"
       KB_ALLOWED_HOSTS: knowledge-bot,localhost,127.0.0.1
       CORS_ORIGINS: http://127.0.0.1:8200
+      SM_JWT_SECRET: ${SM_JWT_SECRET:?Set SM_JWT_SECRET in .env}
+      SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
+      SM_AUDIT_CENTER_URL: http://sm-audit-log-center:8320
     volumes: ["kb-data:/app/data"]
     depends_on: [sm-erp]
     restart: unless-stopped
@@ -467,6 +473,8 @@ services:
     ports: ["${FUSION_BIND_ADDRESS:-127.0.0.1}:8200:8200"]
     environment:
       FUSION_SERVICE_CATALOG: /app/config/services.json
+      SM_INTERNAL_API_KEY: ${SM_INTERNAL_API_KEY:?Set SM_INTERNAL_API_KEY in .env}
+      SM_AUDIT_CENTER_URL: http://sm-audit-log-center:8320
     depends_on:
       - sm-erp
       - knowledge-bot
