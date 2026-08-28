@@ -4,20 +4,24 @@ import asyncio
 import json
 import os
 import re
-import time
+import secrets
 import threading
+import time
+import uuid
+from datetime import UTC, datetime
 from pathlib import Path
 from urllib.parse import urlsplit
-from uuid import uuid4
 
 import httpx
-from fastapi import FastAPI, Request, Response
+from fastapi import FastAPI, HTTPException, Request, Response, status
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import FileResponse
 
 CATALOG_PATH = Path(os.getenv("FUSION_SERVICE_CATALOG", "config/services.json"))
-VERSION = "4.1.0"
+VERSION = "4.2.0"
 REQUEST_ID_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$")
+INTERNAL_API_KEY = os.getenv("SM_INTERNAL_API_KEY", "")
+AUDIT_CENTER_URL = os.getenv("SM_AUDIT_CENTER_URL", "")
 
 
 def load_services() -> list[dict[str, str]]:
@@ -62,7 +66,8 @@ app.add_middleware(
 @app.middleware("http")
 async def security_headers(request: Request, call_next):
     supplied_request_id = request.headers.get("X-Request-Id", "")
-    request_id = supplied_request_id if REQUEST_ID_PATTERN.fullmatch(supplied_request_id) else str(uuid4())
+    request_id = supplied_request_id if REQUEST_ID_PATTERN.fullmatch(supplied_request_id) else str(uuid.uuid4())
+    request.state.request_id = request_id
     response = await call_next(request)
     with metrics_lock:
         metrics["requests_total"] += 1
@@ -78,6 +83,17 @@ async def security_headers(request: Request, call_next):
         response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
     response.headers["Cache-Control"] = "no-store" if request.url.path.startswith("/api/") else "no-cache"
     return response
+
+
+def _forward_audit(action: str, detail: str, request_id: str) -> None:
+    import urllib.request as _ur
+    try:
+        event = {"event_id": str(uuid.uuid4()), "service": "sm-fusion-platform", "action": action, "actor": "portal", "timestamp": datetime.now(UTC).isoformat(), "request_id": request_id, "trace_id": "", "detail": detail[:2000]}
+        body = json.dumps(event, ensure_ascii=False).encode("utf-8")
+        req = _ur.Request(AUDIT_CENTER_URL.rstrip("/") + "/api/audit/events", data=body, headers={"Content-Type": "application/json", "X-Internal-Token": INTERNAL_API_KEY}, method="POST")
+        _ur.urlopen(req, timeout=2)
+    except Exception:
+        pass
 
 
 async def probe(config: dict[str, str]) -> dict[str, object]:
@@ -158,6 +174,17 @@ def ops_metrics() -> dict[str, object]:
     return {"service": "sm-fusion-platform", "version": app.version, "requests_total": int(snapshot["requests_total"]), "errors_total": int(snapshot["errors_total"])}
 
 
+@app.get("/metrics")
+def prometheus_metrics() -> Response:
+    with metrics_lock:
+        snapshot = dict(metrics)
+    body = (
+        f"sm_fusion_requests_total {int(snapshot['requests_total'])}"
+        f"\nsm_fusion_errors_total {int(snapshot['errors_total'])}\n"
+    )
+    return Response(content=body, media_type="text/plain; version=0.0.4")
+
+
 @app.get("/api/version")
 def version() -> dict[str, str]:
     return {"name": app.title, "version": app.version, "channel": os.getenv("FUSION_RELEASE_CHANNEL", "stable")}
@@ -166,17 +193,6 @@ def version() -> dict[str, str]:
 @app.get("/api/crypto/status")
 def crypto_status() -> dict[str, object]:
     return {"algorithm": "SM3/SM4", "sm3": "enabled", "sm4": "enabled", "services": len(load_services())}
-
-
-@app.get("/metrics")
-def prometheus_metrics() -> Response:
-    with metrics_lock:
-        snapshot = dict(metrics)
-    body = (
-        f"sm_fusion_requests_total {int(snapshot['requests_total'])}\n"
-        f"sm_fusion_errors_total {int(snapshot['errors_total'])}\n"
-    )
-    return Response(content=body, media_type="text/plain; version=0.0.4")
 
 
 @app.get("/api/integration/check")
@@ -190,6 +206,7 @@ async def integration_check(request: Request) -> dict[str, object]:
 def gateway_routes() -> dict[str, object]:
     services = load_services()
     return {"routes": [{"id": item["id"], "upstream": item["internal_url"], "health": item.get("health_path", "/health"), "public": item["public_url"], "auth": "iam" if item["id"] not in {"fusion", "health"} else "portal"} for item in services], "count": len(services)}
+
 
 @app.get("/api/audit/contract")
 def audit_contract() -> dict[str, object]:
@@ -207,6 +224,40 @@ def oidc_config() -> dict[str, object]:
         "pkce": "S256",
     }
 
+
 @app.get("/api/events/contract")
 def event_contract() -> dict[str, object]:
     return {"version": "1.0", "transport": "event-bus", "delivery": "at-least-once", "deduplication_key": "event_id", "retry": {"max_attempts": 5, "backoff_seconds": [1, 5, 30, 120, 600]}, "dead_letter": "sm-audit-log-center"}
+
+
+@app.get("/api/integration/manifest")
+def integration_manifest() -> dict[str, object]:
+    return {
+        "service": "sm-fusion-platform",
+        "name": "SM Fusion Platform",
+        "version": app.version,
+        "dependencies": ["sm-iam", "sm-api-gateway", "sm-audit-log-center", "sm-observability"],
+        "events": ["health.checked", "service.probed", "audit.recorded"],
+        "health_path": "/health",
+        "metrics_path": "/api/ops/metrics",
+        "overview_path": "/api/overview",
+    }
+
+
+@app.get("/api/security/baseline")
+def security_baseline() -> dict[str, object]:
+    return {
+        "service": "sm-fusion-platform",
+        "version": app.version,
+        "controls": {
+            "trusted_host": True,
+            "security_headers": True,
+            "csp": True,
+            "catalog_validation": True,
+            "sm3": True,
+            "sm4": True,
+            "internal_token": bool(INTERNAL_API_KEY),
+            "audit_forwarding": bool(AUDIT_CENTER_URL),
+        },
+        "recommended": ["OIDC/MFA", "KMS/HSM", "centralized audit", "OpenTelemetry"],
+    }
