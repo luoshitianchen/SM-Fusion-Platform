@@ -252,3 +252,14 @@ docker compose -f docker-compose.data.yml up -d
 ## v4.1 交互体验升级
 - 新增深色/浅色模式切换。
 - 保持服务矩阵、治理视图和运行指标工作区统一交互。
+
+## 企业维护资料
+
+- [安全基线](SECURITY_BASELINE.md)
+- [运维与可观测性](OPERATIONS.md)
+- [应急响应手册](INCIDENT_RESPONSE.md)
+- [生产部署检查清单](DEPLOYMENT_CHECKLIST.md)
+- [变更记录](CHANGELOG.md)
+- [版本号](VERSION)
+- [依赖锁定](requirements.lock)
+
