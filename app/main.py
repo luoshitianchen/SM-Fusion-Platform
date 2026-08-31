@@ -4,7 +4,6 @@ import asyncio
 import json
 import os
 import re
-import secrets
 import threading
 import time
 import uuid
@@ -13,7 +12,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 import httpx
-from fastapi import FastAPI, HTTPException, Request, Response, status
+from fastapi import FastAPI, Request, Response
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import FileResponse
 

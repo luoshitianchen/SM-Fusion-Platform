@@ -7,7 +7,7 @@
     "tier": "P1",
     "slo": 99.9,
     "environment": "production",
-    "service_version": "2.4.0",
+    "service_version": "4.2.0",
     "tenant_scope": "multi-tenant",
     "compliance": [
       "ISO27001",
@@ -27,7 +27,7 @@
     "tier": "P1",
     "slo": 99.9,
     "environment": "production",
-    "service_version": "2.4.0",
+    "service_version": "2.5.0",
     "tenant_scope": "multi-tenant",
     "compliance": [
       "ISO27001",
@@ -47,7 +47,7 @@
     "tier": "P2",
     "slo": 99.5,
     "environment": "production",
-    "service_version": "2.4.0",
+    "service_version": "2.5.0",
     "tenant_scope": "department-isolated",
     "compliance": [
       "ISO27001",
@@ -278,7 +278,7 @@
     "tier": "P0",
     "slo": 99.95,
     "environment": "production",
-    "service_version": "1.0.0",
+    "service_version": "2.0.0",
     "tenant_scope": "multi-tenant",
     "compliance": [
       "ISO27001",
@@ -289,7 +289,7 @@
     "public_url": "http://{host}:8400",
     "health_path": "/health",
     "manifest_path": "/api/integration/manifest",
-    "description": "统一配置与密钥中心"
+    "description": "统一配置与密钥中心：密钥管理、信封加密、轮换与国密SM4加解密"
   },
   {
     "id": "event-bus",
@@ -299,7 +299,7 @@
     "tier": "P0",
     "slo": 99.95,
     "environment": "production",
-    "service_version": "1.0.0",
+    "service_version": "2.0.0",
     "tenant_scope": "multi-tenant",
     "compliance": [
       "ISO27001",
@@ -310,7 +310,7 @@
     "public_url": "http://{host}:8410",
     "health_path": "/health",
     "manifest_path": "/api/integration/manifest",
-    "description": "企业消息与事件总线"
+    "description": "企业消息与事件总线：主题发布订阅、可靠投递、重试与死信队列"
   },
   {
     "id": "object-storage",
@@ -320,7 +320,7 @@
     "tier": "P1",
     "slo": 99.9,
     "environment": "production",
-    "service_version": "1.0.0",
+    "service_version": "2.0.0",
     "tenant_scope": "multi-tenant",
     "compliance": [
       "ISO27001",
@@ -331,7 +331,7 @@
     "public_url": "http://{host}:8420",
     "health_path": "/health",
     "manifest_path": "/api/integration/manifest",
-    "description": "企业对象存储中心"
+    "description": "企业对象存储中心：桶与对象管理、SM3完整性校验"
   },
   {
     "id": "backup-dr",
@@ -341,7 +341,7 @@
     "tier": "P0",
     "slo": 99.9,
     "environment": "production",
-    "service_version": "1.0.0",
+    "service_version": "2.0.0",
     "tenant_scope": "multi-tenant",
     "compliance": [
       "ISO27001",
@@ -352,7 +352,7 @@
     "public_url": "http://{host}:8430",
     "health_path": "/health",
     "manifest_path": "/api/integration/manifest",
-    "description": "备份与灾备中心"
+    "description": "备份与灾备中心：备份任务、快照、恢复演练与策略"
   },
   {
     "id": "api-developer-portal",
@@ -362,7 +362,7 @@
     "tier": "P1",
     "slo": 99.5,
     "environment": "production",
-    "service_version": "1.0.0",
+    "service_version": "2.0.0",
     "tenant_scope": "multi-tenant",
     "compliance": [
       "ISO27001",
@@ -373,7 +373,7 @@
     "public_url": "http://{host}:8440",
     "health_path": "/health",
     "manifest_path": "/api/integration/manifest",
-    "description": "API开发者门户"
+    "description": "API开发者门户：API注册、应用、订阅与API Key管理"
   },
   {
     "id": "mdm",
@@ -383,7 +383,7 @@
     "tier": "P1",
     "slo": 99.5,
     "environment": "production",
-    "service_version": "1.0.0",
+    "service_version": "2.0.0",
     "tenant_scope": "multi-tenant",
     "compliance": [
       "ISO27001",
@@ -394,7 +394,7 @@
     "public_url": "http://{host}:8450",
     "health_path": "/health",
     "manifest_path": "/api/integration/manifest",
-    "description": "主数据管理"
+    "description": "主数据管理：数据域、黄金记录与去重合并"
   },
   {
     "id": "soc",
@@ -404,7 +404,7 @@
     "tier": "P0",
     "slo": 99.95,
     "environment": "production",
-    "service_version": "1.0.0",
+    "service_version": "2.0.0",
     "tenant_scope": "multi-tenant",
     "compliance": [
       "ISO27001",
@@ -415,7 +415,7 @@
     "public_url": "http://{host}:8460",
     "health_path": "/health",
     "manifest_path": "/api/integration/manifest",
-    "description": "安全运营中心"
+    "description": "安全运营中心：告警接入、事件研判与安全剧本"
   },
   {
     "id": "notification-center",
@@ -425,7 +425,7 @@
     "tier": "P1",
     "slo": 99.5,
     "environment": "production",
-    "service_version": "1.0.0",
+    "service_version": "2.0.0",
     "tenant_scope": "multi-tenant",
     "compliance": [
       "ISO27001",
@@ -436,7 +436,7 @@
     "public_url": "http://{host}:8470",
     "health_path": "/health",
     "manifest_path": "/api/integration/manifest",
-    "description": "企业通知中心"
+    "description": "企业通知中心：多渠道通知、模板渲染与回执"
   },
   {
     "id": "data-exchange",
@@ -446,7 +446,7 @@
     "tier": "P1",
     "slo": 99.5,
     "environment": "production",
-    "service_version": "1.0.0",
+    "service_version": "2.0.0",
     "tenant_scope": "multi-tenant",
     "compliance": [
       "ISO27001",
@@ -457,7 +457,7 @@
     "public_url": "http://{host}:8480",
     "health_path": "/health",
     "manifest_path": "/api/integration/manifest",
-    "description": "数据交换与ETL"
+    "description": "数据交换与ETL：连接器、同步任务与运行监控"
   },
   {
     "id": "hr",
@@ -467,7 +467,7 @@
     "tier": "P1",
     "slo": 99.5,
     "environment": "production",
-    "service_version": "1.0.0",
+    "service_version": "2.0.0",
     "tenant_scope": "multi-tenant",
     "compliance": [
       "ISO27001",
@@ -478,7 +478,7 @@
     "public_url": "http://{host}:8500",
     "health_path": "/health",
     "manifest_path": "/api/integration/manifest",
-    "description": "SM HR"
+    "description": "人力资源管理系统：组织、员工、考勤、请假与薪酬"
   },
   {
     "id": "crm",
@@ -488,7 +488,7 @@
     "tier": "P1",
     "slo": 99.5,
     "environment": "production",
-    "service_version": "1.0.0",
+    "service_version": "2.0.0",
     "tenant_scope": "multi-tenant",
     "compliance": [
       "ISO27001",
@@ -499,7 +499,7 @@
     "public_url": "http://{host}:8510",
     "health_path": "/health",
     "manifest_path": "/api/integration/manifest",
-    "description": "SM CRM"
+    "description": "客户关系管理系统：线索、客户、联系人、商机与跟进"
   },
   {
     "id": "finance",
@@ -509,7 +509,7 @@
     "tier": "P1",
     "slo": 99.5,
     "environment": "production",
-    "service_version": "1.0.0",
+    "service_version": "2.0.0",
     "tenant_scope": "multi-tenant",
     "compliance": [
       "ISO27001",
@@ -520,7 +520,7 @@
     "public_url": "http://{host}:8520",
     "health_path": "/health",
     "manifest_path": "/api/integration/manifest",
-    "description": "SM Finance"
+    "description": "财务管理系统：总账、凭证、发票、预算与报表"
   },
   {
     "id": "procurement",
@@ -530,7 +530,7 @@
     "tier": "P1",
     "slo": 99.5,
     "environment": "production",
-    "service_version": "1.0.0",
+    "service_version": "2.0.0",
     "tenant_scope": "multi-tenant",
     "compliance": [
       "ISO27001",
@@ -541,7 +541,7 @@
     "public_url": "http://{host}:8530",
     "health_path": "/health",
     "manifest_path": "/api/integration/manifest",
-    "description": "SM Procurement"
+    "description": "采购管理系统：供应商、采购订单、明细与收货"
   },
   {
     "id": "legal-contract",
@@ -551,7 +551,7 @@
     "tier": "P1",
     "slo": 99.5,
     "environment": "production",
-    "service_version": "1.0.0",
+    "service_version": "2.0.0",
     "tenant_scope": "multi-tenant",
     "compliance": [
       "ISO27001",
@@ -562,7 +562,7 @@
     "public_url": "http://{host}:8540",
     "health_path": "/health",
     "manifest_path": "/api/integration/manifest",
-    "description": "SM Legal Contract"
+    "description": "合同管理系统：合同登记、版本管理、审批与到期预警"
   },
   {
     "id": "release-center",
@@ -572,7 +572,7 @@
     "tier": "P1",
     "slo": 99.5,
     "environment": "production",
-    "service_version": "1.0.0",
+    "service_version": "2.0.0",
     "tenant_scope": "multi-tenant",
     "compliance": [
       "ISO27001",
@@ -583,6 +583,6 @@
     "public_url": "http://{host}:8550",
     "health_path": "/health",
     "manifest_path": "/api/integration/manifest",
-    "description": "SM Release Center"
+    "description": "发布中心：流水线、发布、部署与回滚"
   }
 ]
