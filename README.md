@@ -43,7 +43,7 @@ docker compose up --build -d
 
 ```powershell
 py -3.11 -m venv .venv
-.\.venv\Scripts\Activate.ps1
+.\\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8200
 ```
@@ -238,7 +238,7 @@ docker compose -f docker-compose.data.yml up -d
 - 生产环境通过 `OIDC_ISSUER`、`OIDC_AUTHORIZATION_ENDPOINT`、`OIDC_TOKEN_ENDPOINT` 和 `OIDC_JWKS_URI` 注入真实 IAM 地址。
 
 
-## v3.8 业务域补齐
+## v3.10 业务域补齐
 新增 HR、CRM、Finance、Procurement、Legal Contract、Release Center 六个业务项目，服务矩阵扩展到 28 个。
 
 
@@ -269,4 +269,3 @@ docker compose -f docker-compose.data.yml up -d
 - [变更记录](CHANGELOG.md)
 - [版本号](VERSION)
 - [依赖锁定](requirements.lock)
-
