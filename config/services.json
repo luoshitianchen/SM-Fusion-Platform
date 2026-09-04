@@ -278,7 +278,7 @@
     "tier": "P0",
     "slo": 99.95,
     "environment": "production",
-    "service_version": "2.0.0",
+    "service_version": "2.0.1",
     "tenant_scope": "multi-tenant",
     "compliance": [
       "ISO27001",
