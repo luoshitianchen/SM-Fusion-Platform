@@ -17,7 +17,7 @@ from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import FileResponse
 
 CATALOG_PATH = Path(os.getenv("FUSION_SERVICE_CATALOG", "config/services.json"))
-VERSION = "4.2.0"
+VERSION = "5.0.0"
 REQUEST_ID_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$")
 INTERNAL_API_KEY = os.getenv("SM_INTERNAL_API_KEY", "")
 AUDIT_CENTER_URL = os.getenv("SM_AUDIT_CENTER_URL", "")

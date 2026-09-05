@@ -16,4 +16,5 @@ jobs:
           FUSION_INTEGRATION_KEY: ci-only-integration-key-with-32-characters
           ERP_BOOTSTRAP_PASSWORD: ci-only-strong-bootstrap-password
           ERP_SM4_KEY_HEX: 00112233445566778899aabbccddeeff
-
+      - run: python -m pip_audit -r requirements.txt
+      - run: python -c "import json,os; assert os.path.exists('sbom.json'); d=json.load(open('sbom.json')); assert d.get('bomFormat')=='CycloneDX' and d['components']; print(f\"SBOM OK: {len(d['components'])} components\")"
