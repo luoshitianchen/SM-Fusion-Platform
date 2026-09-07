@@ -90,8 +90,8 @@ def _forward_audit(action: str, detail: str, request_id: str) -> None:
         event = {"event_id": str(uuid.uuid4()), "service": "sm-fusion-platform", "action": action, "actor": "portal", "timestamp": datetime.now(UTC).isoformat(), "request_id": request_id, "trace_id": "", "detail": detail[:2000]}
         body = json.dumps(event, ensure_ascii=False).encode("utf-8")
         req = _ur.Request(AUDIT_CENTER_URL.rstrip("/") + "/api/audit/events", data=body, headers={"Content-Type": "application/json", "X-Internal-Token": INTERNAL_API_KEY}, method="POST")
-        _ur.urlopen(req, timeout=2)
-    except Exception:
+        _ur.urlopen(req, timeout=2)  # nosec B310  # 审计转发至受控内部URL，带X-Internal-Token认证
+    except Exception:  # nosec B110  # 故意忽略：审计转发为best-effort，失败不影响主流程
         pass
 
 
