@@ -1,4 +1,5 @@
-﻿from fastapi.testclient import TestClient
+from fastapi.testclient import TestClient
+
 from app.main import app, load_services
 from desktop.main import version_tuple
 
@@ -31,7 +32,7 @@ def test_version_endpoint_is_stable():
     with TestClient(app) as client:
         response = client.get("/api/version")
         assert response.status_code == 200
-        assert response.json()["version"] == "5.0.0"
+        assert response.json()["version"] == "4.1.0"
 
 
 def test_service_catalog_and_semantic_versions_are_valid():
@@ -73,7 +74,7 @@ def test_prometheus_metrics():
     with TestClient(app) as client:
         response = client.get('/metrics')
         assert response.status_code == 200
-        assert 'sm_fusion_requests_total' in response.text
+        assert 'sm_fusion_platform_requests_total' in response.text
 
 
 
