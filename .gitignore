@@ -9,3 +9,7 @@ dist/
 *.spec
 desktop/desktop-config.json
 *.bak
+
+.coverage
+coverage.xml
+htmlcov/
