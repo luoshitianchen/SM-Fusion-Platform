@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
@@ -15,6 +16,8 @@ from app.routers import crypto, health, items, meta, metrics, portal
 from app.services.portal import load_services  # noqa: F401  (供 from app.main import load_services)
 
 setup_logging()
+
+_STATIC_DIR = Path(__file__).resolve().parent / "static"
 
 
 @asynccontextmanager
@@ -50,4 +53,4 @@ app.include_router(portal.router)
 @app.get("/", include_in_schema=False)
 def console() -> FileResponse:
     """控制台静态页面。"""
-    return FileResponse("app/static/index.html")
+    return FileResponse(_STATIC_DIR / "index.html")

@@ -18,7 +18,15 @@ from urllib.parse import urlsplit
 import httpx
 from fastapi import Request
 
-CATALOG_PATH = Path(os.getenv("FUSION_SERVICE_CATALOG", "config/services.json"))
+_REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+_default_catalog = _REPO_ROOT / "config" / "services.json"
+_env_catalog = os.getenv("FUSION_SERVICE_CATALOG")
+if _env_catalog:
+    CATALOG_PATH = Path(_env_catalog)
+    if not CATALOG_PATH.is_absolute():
+        CATALOG_PATH = _REPO_ROOT / CATALOG_PATH
+else:
+    CATALOG_PATH = _default_catalog
 # 门户对外契约版本（稳定版），与运行时构建版本解耦
 PORTAL_VERSION = "4.1.0"
 PROBE_CACHE_SECONDS = int(os.getenv("FUSION_PROBE_CACHE_SECONDS", "5"))
