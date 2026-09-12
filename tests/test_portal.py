@@ -1,7 +1,7 @@
 from fastapi.testclient import TestClient
 
 from app.main import app, load_services
-from desktop.main import version_tuple
+from app.services.version_utils import version_tuple
 
 
 def test_portal_and_health():
