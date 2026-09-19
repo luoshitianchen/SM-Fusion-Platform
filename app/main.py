@@ -13,6 +13,9 @@ from app.core.database import init_db
 from app.core.logging import setup_logging
 from app.core.middleware import SecurityMiddleware
 from app.routers import crypto, health, items, meta, metrics, portal
+from app.routers import service_dependencies as fusion_dependencies
+from app.routers import service_health_checks as fusion_health_checks
+from app.routers import sla as fusion_sla
 from app.services.portal import load_services  # noqa: F401  (供 from app.main import load_services)
 
 setup_logging()
@@ -47,6 +50,9 @@ app.include_router(crypto.router)
 app.include_router(items.router)
 app.include_router(metrics.router)
 app.include_router(portal.router)
+app.include_router(fusion_health_checks.router)
+app.include_router(fusion_dependencies.router)
+app.include_router(fusion_sla.router)
 
 
 
