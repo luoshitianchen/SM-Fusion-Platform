@@ -1,0 +1,24 @@
+# STAGING 环境覆盖 values（通过 -f values-staging.yaml 合并）
+replicaCount: 1
+
+image:
+  tag: "4.2.0"
+
+config:
+  env: staging
+  logLevel: INFO
+  logFormat: json
+  databaseHost: "sm-fusion-platform-pg"
+  databaseName: "sm_fusion_platform"
+  allowedHosts: "sm-fusion-platform.staging.sm.example.com,localhost"
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 4
+
+ingress:
+  enabled: true
+  host: "sm-fusion-platform.staging.sm.example.com"
+
+# 数据库实例规格提示（staging）：中规格

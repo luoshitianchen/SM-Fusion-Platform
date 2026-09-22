@@ -1,0 +1,14 @@
+# Helm Chart: sm-fusion-platform（融合平台微服务）
+# 企业级部署资产，由模板规范 TEMPLATE_SPEC v1.0 生成
+apiVersion: v2
+name: sm-fusion-platform
+description: "融合平台微服务 Helm Chart（SM 平台协作智能微服务）"
+type: application
+version: 1.0.0
+appVersion: "4.2.0"
+keywords:
+  - sm
+  - microservice
+  - sm-fusion-platform
+maintainers:
+  - name: sm-platform-team
